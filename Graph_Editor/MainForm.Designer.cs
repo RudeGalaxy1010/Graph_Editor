@@ -28,13 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.AddVertexButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.CoordsText = new System.Windows.Forms.Label();
             this.ConnectButton = new System.Windows.Forms.Button();
             this.MainPictureBox = new System.Windows.Forms.PictureBox();
+            this.VertexContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.deleteVertexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
+            this.VertexContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // AddVertexButton
@@ -78,12 +82,27 @@
             // MainPictureBox
             // 
             this.MainPictureBox.Dock = System.Windows.Forms.DockStyle.Right;
-            this.MainPictureBox.Location = new System.Drawing.Point(90, 0);
+            this.MainPictureBox.Location = new System.Drawing.Point(102, 0);
             this.MainPictureBox.Margin = new System.Windows.Forms.Padding(0);
             this.MainPictureBox.Name = "MainPictureBox";
-            this.MainPictureBox.Size = new System.Drawing.Size(710, 450);
+            this.MainPictureBox.Size = new System.Drawing.Size(698, 450);
             this.MainPictureBox.TabIndex = 4;
             this.MainPictureBox.TabStop = false;
+            // 
+            // VertexContextMenu
+            // 
+            this.VertexContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteVertexToolStripMenuItem});
+            this.VertexContextMenu.Name = "VertexContextMenu";
+            this.VertexContextMenu.Size = new System.Drawing.Size(181, 48);
+            this.VertexContextMenu.Opened += new System.EventHandler(this.VertexContextMenu_Opened);
+            // 
+            // deleteVertexToolStripMenuItem
+            // 
+            this.deleteVertexToolStripMenuItem.Name = "deleteVertexToolStripMenuItem";
+            this.deleteVertexToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteVertexToolStripMenuItem.Text = "Delete vertex";
+            this.deleteVertexToolStripMenuItem.Click += new System.EventHandler(this.deleteVertexToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -102,6 +121,7 @@
             this.Name = "MainForm";
             this.Text = "GraphED";
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).EndInit();
+            this.VertexContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -114,5 +134,7 @@
         private System.Windows.Forms.Label CoordsText;
         private System.Windows.Forms.Button ConnectButton;
         private System.Windows.Forms.PictureBox MainPictureBox;
+        private System.Windows.Forms.ContextMenuStrip VertexContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem deleteVertexToolStripMenuItem;
     }
 }

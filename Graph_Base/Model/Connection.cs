@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Graph_Base
+﻿namespace Graph_Base
 {
     public class Connection
     {
         public float Weight { get; private set; }
         public bool IsDirected { get; private set; }
+
         public Vertex Vertex1 => new Vertex(_vertex1);
         public Vertex Vertex2 => new Vertex(_vertex2);
 
@@ -26,12 +21,12 @@ namespace Graph_Base
 
         public bool StartsWith(Vertex vertex)
         {
-            return _vertex1 == vertex;
+            return _vertex1.Equals(vertex);
         }
 
         public bool EndsWith(Vertex vertex)
         {
-            return _vertex2 == vertex;
+            return _vertex2.Equals(vertex);
         }
 
         public override bool Equals(object obj)
@@ -40,9 +35,11 @@ namespace Graph_Base
 
             if (connection != null)
             {
-                return connection.Vertex1 == connection.Vertex1 &&
-                       connection.Vertex2 == connection.Vertex2 &&
-                       connection.Weight == connection.Weight;
+                return Weight == connection.Weight &&
+                       ((_vertex1.Equals(connection.Vertex1) &&
+                       _vertex2.Equals(connection.Vertex2)) ||
+                       (_vertex1.Equals(connection.Vertex2) &&
+                       _vertex2.Equals(connection.Vertex1)));
             }
 
             return base.Equals(obj);

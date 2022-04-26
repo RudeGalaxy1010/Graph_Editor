@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Graph_Base
@@ -11,18 +10,32 @@ namespace Graph_Base
 
         private List<Vertex> _vertices;
         private List<Connection> _connections;
+        private List<int> _ids;
 
         public Graph()
         {
             _vertices = new List<Vertex>();
             _connections = new List<Connection>();
+            _ids = new List<int>();
         }
 
         public void AddVertex(Vertex vertex)
         {
             if (vertex != null)
             {
+                vertex.Id = GetId();
                 _vertices.Add(vertex);
+            }
+        }
+
+        public void RemoveVertex(Vertex vertex)
+        {
+            if (_vertices.Contains(vertex))
+            {
+                _ids.Remove(vertex.Id);
+                _vertices.Remove(vertex);
+                List<Connection> connections = FindConnections(vertex).ToList();
+                _connections = _connections.Except(connections).ToList();
             }
         }
 
@@ -46,7 +59,7 @@ namespace Graph_Base
             float[,] matrix = GetEmptyMatrix(_vertices.Count, _vertices.Count);
             for (int i = 0; i < _vertices.Count; i++)
             {
-                Connection connection = FindVertexConnection(_vertices[i]);
+                Connection connection = FindConnection(_vertices[i]);
 
                 if (connection == null)
                 {
@@ -78,9 +91,24 @@ namespace Graph_Base
             return matrix;
         }
 
-        private Connection FindVertexConnection(Vertex vertex)
+        private Connection FindConnection(Vertex vertex)
         {
             return _connections.FirstOrDefault(c => c.StartsWith(vertex));
+        }
+
+        private int GetId()
+        {
+            for (int i = 0; i < _ids.Count + 1; i++)
+            {
+                int id = i + 1;
+                if (_ids.Contains(id) == false)
+                {
+                    _ids.Add(id);
+                    return id;
+                }
+            }
+
+            return -1;
         }
     }
 }

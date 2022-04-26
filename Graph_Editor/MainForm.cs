@@ -1,12 +1,9 @@
-﻿using System;
+﻿using Graph_Base;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Graph_Base;
 
 namespace Graph_Editor
 {
@@ -19,26 +16,21 @@ namespace Graph_Editor
     public partial class MainForm : Form
     {
         Graph _graph = new Graph();
-
-        Control? _selectedElement;
-        Point _delta;
+        Dictionary<Control, Vertex> _visualVerticies;
+        MouseActions _mouseActions;
+        Bitmap _canvas;
         Mode _mode;
 
-        Control? _selectedVertex1;
-        Control? _selectedVertex2;
-        Dictionary<Control, Vertex> _visualVerticies;
-
-        Bitmap _canvas;
+        Control? _selectedVertex;
 
         public MainForm()
         {
             InitializeComponent();
 
-            _selectedElement = null;
-            _delta = new Point(0, 0);
+            _visualVerticies = new Dictionary<Control, Vertex>();
+            _mouseActions = new MouseActions(_graph, _visualVerticies);
             _canvas = new Bitmap(MainPictureBox.Width, MainPictureBox.Height);
             _mode = Mode.Edit;
-            _visualVerticies = new Dictionary<Control, Vertex>();
 
             ClearCanvas();
         }
@@ -55,92 +47,48 @@ namespace Graph_Editor
                 Height = 40,
                 Parent = MainPictureBox,
                 Location = new Point(ActiveForm.Width / 2, ActiveForm.Height / 2),
-                Text = $"{vertex.Id + 1}",
+                Text = $"{vertex.Id}",
+                ContextMenuStrip = VertexContextMenu,
             };
 
-            button.MouseDown += (s, e) => SelectElement(button);
-            button.MouseUp += (s, e) => DeselectElement();
-            button.MouseMove += (s, e) => MoveElement(button);
+            button.MouseDown += (s, e) => {
+                if (_mode == Mode.Edit)
+                {
+                    _mouseActions.SelectElement(button);
+                }
+                else if (_mode == Mode.Connect)
+                {
+                    _mouseActions.SelectVertex(button);
+                }
+            };
+            button.MouseUp += (s, e) =>
+            {
+                if (_mode == Mode.Edit)
+                {
+                    _mouseActions.DeselectElement(CoordsText);
+                }
+                else if (_mode == Mode.Connect)
+                {
+                    if (_mouseActions.TryCreateConnection())
+                    {
+                        DrawConnections();
+                    }
+                }
+            };
+            button.MouseMove += (s, e) =>
+            {
+                _mouseActions.MoveElement(button, MainPictureBox, CoordsText);
+                DrawConnections();
+            };
 
             Controls.Add(button);
             button.BringToFront();
 
             _visualVerticies.Add(button, vertex);
         }
-
-        private void SelectElement(Control element)
-        {
-            if (_mode == Mode.Edit)
-            {
-                _selectedElement = element;
-                var center = new Point(element.Location.X - element.Width, element.Location.Y - (int)(element.Height * 1.5f));
-                _delta = new Point(Cursor.Position.X - center.X, Cursor.Position.Y - center.Y);
-            }
-            else if (_mode == Mode.Connect)
-            {
-                if (_selectedVertex1 == null)
-                {
-                    _selectedVertex1 = element;
-                }
-                else if (_selectedVertex2 == null)
-                {
-                    _selectedVertex2 = element;
-                }
-            }
-        }
-
-        private void DeselectElement()
-        {
-            if (_mode == Mode.Edit)
-            {
-                _selectedElement = null;
-                CoordsText.Text = "";
-            }
-            else if (_mode == Mode.Connect)
-            {
-                if (_selectedVertex1 != null && _selectedVertex2 != null)
-                {
-                    Vertex vertex1 = _visualVerticies[_selectedVertex1];
-                    Vertex vertex2 = _visualVerticies[_selectedVertex2];
-                    Connection connection = new Connection(vertex1, vertex2, 0);
-                    _graph.AddConnection(connection);
-
-                    _selectedVertex1 = null;
-                    _selectedVertex2 = null;
-
-                    DrawConnections();
-                }
-            }
-        }
-
-        private void MoveElement(Control element)
-        {
-            if (element == null || element != _selectedElement)
-            {
-                return;
-            }
-
-            int xPosition = Cursor.Position.X + element.Width - _delta.X;
-            int yPosition = Cursor.Position.Y + (int)(element.Height * 1.5f) - _delta.Y;
-
-            int leftBorber = MainPictureBox.Location.X;
-            int rightBorder = MainPictureBox.Location.X + MainPictureBox.Width - element.Width;
-            int topBorber = MainPictureBox.Location.Y;
-            int bottomBorder = MainPictureBox.Location.Y + MainPictureBox.Height - element.Height;
-
-            xPosition = xPosition < leftBorber ? leftBorber : xPosition;
-            xPosition = xPosition > rightBorder ? rightBorder : xPosition;
-            yPosition = yPosition < topBorber ? topBorber : yPosition;
-            yPosition = yPosition > bottomBorder ? bottomBorder : yPosition;
-
-            element.Location = new Point(xPosition, yPosition);
-            CoordsText.Text = element.Location.ToString();
-
-            DrawConnections();
-        }
         #endregion
 
-        #region Connections
+        #region Connections and drawing
         private void ConnectButton_Click(object sender, EventArgs e)
         {
             ConnectButton.Text = _mode.ToString();
@@ -166,8 +114,8 @@ namespace Graph_Editor
                 Vertex vertex1 = connection.Vertex1;
                 Vertex vertex2 = connection.Vertex2;
 
-                Control vertexControl1 = _visualVerticies.First(v => v.Value == vertex1).Key;
-                Control vertexControl2 = _visualVerticies.First(v => v.Value == vertex2).Key;
+                Control vertexControl1 = _visualVerticies.First(v => v.Value.Equals(vertex1)).Key;
+                Control vertexControl2 = _visualVerticies.First(v => v.Value.Equals(vertex2)).Key;
                 DrawConnection(vertexControl1, vertexControl2);
             }
         }
@@ -188,7 +136,6 @@ namespace Graph_Editor
             graphics.DrawLine(pen, vertexCenter1, vertexCenter2);
             MainPictureBox.Image = _canvas;
         }
-        #endregion
 
         private void ClearCanvas()
         {
@@ -196,6 +143,26 @@ namespace Graph_Editor
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             graphics.Clear(Color.White);
             MainPictureBox.Image = _canvas;
+        }
+        #endregion
+
+        private void deleteVertexToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_selectedVertex != null)
+            {
+                Controls.Remove(_selectedVertex);
+                Vertex vertex = _visualVerticies[_selectedVertex];
+                _visualVerticies.Remove(_selectedVertex);
+                _graph.RemoveVertex(vertex);
+            }
+
+            DrawConnections();
+        }
+
+        private void VertexContextMenu_Opened(object sender, EventArgs e)
+        {
+            ContextMenuStrip contextMenuStrip = sender as ContextMenuStrip;
+            _selectedVertex = contextMenuStrip.SourceControl;
         }
     }
 }
