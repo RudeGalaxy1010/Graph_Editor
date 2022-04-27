@@ -1,4 +1,5 @@
 ﻿using Graph_Base;
+using Graph_Base.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -21,7 +22,7 @@ namespace Graph_Editor
         Bitmap _canvas;
         Mode _mode;
 
-        Control? _selectedVertex;
+        Control? _selectedInContextVertex;
 
         public MainForm()
         {
@@ -146,13 +147,14 @@ namespace Graph_Editor
         }
         #endregion
 
+        #region Removing
         private void deleteVertexToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (_selectedVertex != null)
+            if (_selectedInContextVertex != null)
             {
-                Controls.Remove(_selectedVertex);
-                Vertex vertex = _visualVerticies[_selectedVertex];
-                _visualVerticies.Remove(_selectedVertex);
+                Controls.Remove(_selectedInContextVertex);
+                Vertex vertex = _visualVerticies[_selectedInContextVertex];
+                _visualVerticies.Remove(_selectedInContextVertex);
                 _graph.RemoveVertex(vertex);
             }
 
@@ -162,7 +164,31 @@ namespace Graph_Editor
         private void VertexContextMenu_Opened(object sender, EventArgs e)
         {
             ContextMenuStrip contextMenuStrip = sender as ContextMenuStrip;
-            _selectedVertex = contextMenuStrip.SourceControl;
+            if (contextMenuStrip != null)
+            {
+                _selectedInContextVertex = contextMenuStrip.SourceControl;
+            }
+        }
+        #endregion
+
+        private void AdjacencyMatrixButton_Click(object sender, EventArgs e)
+        {
+            var form = new Form()
+            {
+                Width = 500,
+                Height = 500,
+                MaximumSize = new Size(500, 500),
+                MinimumSize = new Size(500, 500),
+            };
+            var text = new Label()
+            {
+                Text = _graph.GetAdjacencyMatrix().GetTableFormat(),
+                Size = new Size(form.Width, form.Height),
+                Location = new Point(form.Width / 2, form.Height / 2),
+            };
+            form.Controls.Add(text);
+            text.BringToFront();
+            form.ShowDialog();
         }
     }
 }

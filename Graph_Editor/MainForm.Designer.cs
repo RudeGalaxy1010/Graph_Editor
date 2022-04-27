@@ -37,6 +37,7 @@
             this.MainPictureBox = new System.Windows.Forms.PictureBox();
             this.VertexContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteVertexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AdjacencyMatrixButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
             this.VertexContextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -94,15 +95,25 @@
             this.VertexContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteVertexToolStripMenuItem});
             this.VertexContextMenu.Name = "VertexContextMenu";
-            this.VertexContextMenu.Size = new System.Drawing.Size(181, 48);
+            this.VertexContextMenu.Size = new System.Drawing.Size(143, 26);
             this.VertexContextMenu.Opened += new System.EventHandler(this.VertexContextMenu_Opened);
             // 
             // deleteVertexToolStripMenuItem
             // 
             this.deleteVertexToolStripMenuItem.Name = "deleteVertexToolStripMenuItem";
-            this.deleteVertexToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteVertexToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.deleteVertexToolStripMenuItem.Text = "Delete vertex";
             this.deleteVertexToolStripMenuItem.Click += new System.EventHandler(this.deleteVertexToolStripMenuItem_Click);
+            // 
+            // AdjacencyMatrixButton
+            // 
+            this.AdjacencyMatrixButton.Location = new System.Drawing.Point(12, 70);
+            this.AdjacencyMatrixButton.Name = "AdjacencyMatrixButton";
+            this.AdjacencyMatrixButton.Size = new System.Drawing.Size(75, 61);
+            this.AdjacencyMatrixButton.TabIndex = 5;
+            this.AdjacencyMatrixButton.Text = "Get adjacency matrix";
+            this.AdjacencyMatrixButton.UseVisualStyleBackColor = true;
+            this.AdjacencyMatrixButton.Click += new System.EventHandler(this.AdjacencyMatrixButton_Click);
             // 
             // MainForm
             // 
@@ -110,6 +121,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.AdjacencyMatrixButton);
             this.Controls.Add(this.ConnectButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.AddVertexButton);
@@ -136,5 +148,6 @@
         private System.Windows.Forms.PictureBox MainPictureBox;
         private System.Windows.Forms.ContextMenuStrip VertexContextMenu;
         private System.Windows.Forms.ToolStripMenuItem deleteVertexToolStripMenuItem;
+        private System.Windows.Forms.Button AdjacencyMatrixButton;
     }
 }

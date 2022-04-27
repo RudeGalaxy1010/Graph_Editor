@@ -54,9 +54,10 @@ namespace Graph_Editor
         {
             if (_selectedVertex1 != null && _selectedVertex2 != null)
             {
+                // TODO: fix bug here : 'key was not presented'
                 Vertex vertex1 = _visualVerticies[_selectedVertex1];
                 Vertex vertex2 = _visualVerticies[_selectedVertex2];
-                Connection connection = new Connection(vertex1, vertex2, 0);
+                Connection connection = new Connection(vertex1, vertex2, 1);
                 _graph.AddConnection(connection);
 
                 _selectedVertex1 = null;
