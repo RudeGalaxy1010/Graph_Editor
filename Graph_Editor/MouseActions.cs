@@ -1,4 +1,5 @@
 ﻿using Graph_Base;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -60,13 +61,18 @@ namespace Graph_Editor
                 Connection connection = new Connection(vertex1, vertex2, 1);
                 _graph.AddConnection(connection);
 
-                _selectedVertex1 = null;
-                _selectedVertex2 = null;
+                ClearSelectedVerticies();
 
                 return true;
             }
 
             return false;
+        }
+
+        public void ClearSelectedVerticies()
+        {
+            _selectedVertex1 = null;
+            _selectedVertex2 = null;
         }
 
         public void MoveElement(Control element, PictureBox mainPictureBox, Label? coordsText = null)

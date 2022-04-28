@@ -3,6 +3,8 @@ using Graph_Base.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -92,6 +94,7 @@ namespace Graph_Editor
         #region Connections and drawing
         private void ConnectButton_Click(object sender, EventArgs e)
         {
+            _mouseActions.ClearSelectedVerticies();
             ConnectButton.Text = _mode.ToString();
 
             if (_mode == Mode.Edit)
@@ -180,15 +183,48 @@ namespace Graph_Editor
                 MaximumSize = new Size(500, 500),
                 MinimumSize = new Size(500, 500),
             };
-            var text = new Label()
+
+            var saveButton = new Button()
+            {
+                Text = "Save",
+                Size = new Size(form.Width - 25, 25),
+                Location = new Point(5, 5),
+            };
+
+            var text = new TextBox()
             {
                 Text = _graph.GetAdjacencyMatrix().GetTableFormat(),
-                Size = new Size(form.Width, form.Height),
-                Location = new Point(form.Width / 2, form.Height / 2),
+                Size = new Size(form.Width - 25, form.Height - 80),
+                Location = new Point(5, 35),
+                Multiline = true,
+                TextAlign = HorizontalAlignment.Center,
             };
+
+            form.Controls.Add(saveButton);
             form.Controls.Add(text);
             text.BringToFront();
             form.ShowDialog();
+        }
+
+        private void ScreenshotButton_Click(object sender, EventArgs e)
+        {
+            Bitmap image = new Bitmap(MainPictureBox.Width, MainPictureBox.Height);
+            Graphics graphics = Graphics.FromImage(image);
+            // TODO: change capture size
+            graphics.CopyFromScreen(ActiveForm.Location, new Point(-(MainPictureBox.Location.X + 8), -30), ActiveForm.Size);
+            
+            SaveFileDialog saveFileDialog = new SaveFileDialog()
+            {
+                InitialDirectory = @"c:\Documents",
+                Filter = "Image (*.png)|*.png|All files (*.*)|*.*",
+                FileName = "Graph"
+            };
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string path = saveFileDialog.FileName;
+                image.Save(path, ImageFormat.Png);
+            }
         }
     }
 }

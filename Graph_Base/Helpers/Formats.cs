@@ -16,9 +16,9 @@ namespace Graph_Base.Helpers
             {
                 for (int j = 0; j < array.GetLength(1); j++)
                 {
-                    result += $"{array[i, j]}\t";
+                    result += $"{array[i, j]}" + (j == array.GetLength(1) - 1 ? "" : "\t");
                 }
-                result += "\n";
+                result += Environment.NewLine;
             }
 
             return result;
