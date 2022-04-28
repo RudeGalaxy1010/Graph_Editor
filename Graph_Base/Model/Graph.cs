@@ -47,6 +47,14 @@ namespace Graph_Base
             }
         }
 
+        public void RemoveConnection(Connection connection)
+        {
+            if (Connections.Contains(connection))
+            {
+                _connections.Remove(connection);
+            }
+        }
+
         public IEnumerable<Connection> FindConnections(Vertex vertex)
         {
             return from connection in _connections
@@ -54,12 +62,17 @@ namespace Graph_Base
                    select connection;
         }
 
+        public Connection GetConnection(Vertex vertex1, Vertex vertex2)
+        {
+            return Connections.FirstOrDefault(c => c.StartsWith(vertex1) && c.EndsWith(vertex2));
+        }
+
         public float[,] GetAdjacencyMatrix()
         {
             float[,] matrix = GetEmptyMatrix(_vertices.Count, _vertices.Count);
             for (int i = 0; i < _vertices.Count; i++)
             {
-                Connection connection = FindConnection(_vertices[i]);
+                Connection connection = Connections.FirstOrDefault(c => c.StartsWith(_vertices[i]));
 
                 if (connection == null)
                 {
@@ -89,11 +102,6 @@ namespace Graph_Base
             }
 
             return matrix;
-        }
-
-        private Connection FindConnection(Vertex vertex)
-        {
-            return _connections.FirstOrDefault(c => c.StartsWith(vertex));
         }
 
         private int GetId()

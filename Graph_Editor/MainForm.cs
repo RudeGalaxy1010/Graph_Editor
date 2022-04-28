@@ -14,6 +14,7 @@ namespace Graph_Editor
     {
         Edit,
         Connect,
+        Disconnect,
     }
 
     public partial class MainForm : Form
@@ -34,6 +35,7 @@ namespace Graph_Editor
             _mouseActions = new MouseActions(_graph, _visualVerticies);
             _canvas = new Bitmap(MainPictureBox.Width, MainPictureBox.Height);
             _mode = Mode.Edit;
+            editToolStripMenuItem_Click(null, null);
 
             ClearCanvas();
         }
@@ -63,6 +65,10 @@ namespace Graph_Editor
                 {
                     _mouseActions.SelectVertex(button);
                 }
+                else if (_mode == Mode.Disconnect)
+                {
+                    _mouseActions.SelectVertex(button);
+                }
             };
             button.MouseUp += (s, e) =>
             {
@@ -73,6 +79,13 @@ namespace Graph_Editor
                 else if (_mode == Mode.Connect)
                 {
                     if (_mouseActions.TryCreateConnection())
+                    {
+                        DrawConnections();
+                    }
+                }
+                else if (_mode == Mode.Disconnect)
+                {
+                    if (_mouseActions.TryRemoveConnection())
                     {
                         DrawConnections();
                     }
@@ -92,19 +105,10 @@ namespace Graph_Editor
         #endregion
 
         #region Connections and drawing
-        private void ConnectButton_Click(object sender, EventArgs e)
+        private void ModeButton_Click(object sender, EventArgs e)
         {
             _mouseActions.ClearSelectedVerticies();
-            ConnectButton.Text = _mode.ToString();
-
-            if (_mode == Mode.Edit)
-            {
-                _mode = Mode.Connect;
-            }
-            else if (_mode == Mode.Connect)
-            {
-                _mode = Mode.Edit;
-            }
+            ModeContextMenu.Show(ModeButton, 0, ModeButton.Height);
         }
 
         private void DrawConnections()
@@ -174,6 +178,30 @@ namespace Graph_Editor
         }
         #endregion
 
+        #region Mode
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeMode(Mode.Edit);
+        }
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeMode(Mode.Connect);
+        }
+
+        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeMode(Mode.Disconnect);
+        }
+
+        private void ChangeMode(Mode mode)
+        {
+            _mode = mode;
+            ModeButton.Text = _mode.ToString();
+        }
+        #endregion
+
+        #region Graph works
         private void AdjacencyMatrixButton_Click(object sender, EventArgs e)
         {
             var form = new Form()
@@ -205,7 +233,9 @@ namespace Graph_Editor
             text.BringToFront();
             form.ShowDialog();
         }
+        #endregion
 
+        #region Saving
         private void ScreenshotButton_Click(object sender, EventArgs e)
         {
             Bitmap image = new Bitmap(MainPictureBox.Width, MainPictureBox.Height);
@@ -226,5 +256,6 @@ namespace Graph_Editor
                 image.Save(path, ImageFormat.Png);
             }
         }
+        #endregion
     }
 }

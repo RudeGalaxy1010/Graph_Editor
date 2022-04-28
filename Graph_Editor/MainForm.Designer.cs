@@ -33,7 +33,7 @@
             this.AddVertexButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.CoordsText = new System.Windows.Forms.Label();
-            this.ConnectButton = new System.Windows.Forms.Button();
+            this.ModeButton = new System.Windows.Forms.Button();
             this.MainPictureBox = new System.Windows.Forms.PictureBox();
             this.VertexContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteVertexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,8 +43,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.ModeContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
             this.VertexContextMenu.SuspendLayout();
+            this.ModeContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // AddVertexButton
@@ -75,15 +80,15 @@
             this.CoordsText.Size = new System.Drawing.Size(0, 15);
             this.CoordsText.TabIndex = 2;
             // 
-            // ConnectButton
+            // ModeButton
             // 
-            this.ConnectButton.Location = new System.Drawing.Point(12, 41);
-            this.ConnectButton.Name = "ConnectButton";
-            this.ConnectButton.Size = new System.Drawing.Size(75, 23);
-            this.ConnectButton.TabIndex = 3;
-            this.ConnectButton.Text = "Connect";
-            this.ConnectButton.UseVisualStyleBackColor = true;
-            this.ConnectButton.Click += new System.EventHandler(this.ConnectButton_Click);
+            this.ModeButton.Location = new System.Drawing.Point(12, 41);
+            this.ModeButton.Name = "ModeButton";
+            this.ModeButton.Size = new System.Drawing.Size(75, 23);
+            this.ModeButton.TabIndex = 3;
+            this.ModeButton.Text = "Connect";
+            this.ModeButton.UseVisualStyleBackColor = true;
+            this.ModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // MainPictureBox
             // 
@@ -166,6 +171,36 @@
             this.label5.TabIndex = 10;
             this.label5.Text = "label5";
             // 
+            // ModeContextMenu
+            // 
+            this.ModeContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editToolStripMenuItem,
+            this.connectToolStripMenuItem,
+            this.disconnectToolStripMenuItem});
+            this.ModeContextMenu.Name = "ModeContextMenu";
+            this.ModeContextMenu.Size = new System.Drawing.Size(134, 70);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.editToolStripMenuItem.Text = "Edit";
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
+            // connectToolStripMenuItem
+            // 
+            this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
+            this.connectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.connectToolStripMenuItem.Text = "Connect";
+            this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
+            // 
+            // disconnectToolStripMenuItem
+            // 
+            this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.disconnectToolStripMenuItem.Text = "Disconnect";
+            this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -178,7 +213,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.ScreenshotButton);
             this.Controls.Add(this.AdjacencyMatrixButton);
-            this.Controls.Add(this.ConnectButton);
+            this.Controls.Add(this.ModeButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.AddVertexButton);
             this.Controls.Add(this.CoordsText);
@@ -190,6 +225,7 @@
             this.Text = "GraphED";
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).EndInit();
             this.VertexContextMenu.ResumeLayout(false);
+            this.ModeContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -200,7 +236,7 @@
         private System.Windows.Forms.Button AddVertexButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label CoordsText;
-        private System.Windows.Forms.Button ConnectButton;
+        private System.Windows.Forms.Button ModeButton;
         private System.Windows.Forms.PictureBox MainPictureBox;
         private System.Windows.Forms.ContextMenuStrip VertexContextMenu;
         private System.Windows.Forms.ToolStripMenuItem deleteVertexToolStripMenuItem;
@@ -210,5 +246,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ContextMenuStrip ModeContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
     }
 }

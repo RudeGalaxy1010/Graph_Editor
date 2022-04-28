@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Graph_Editor
@@ -55,11 +56,35 @@ namespace Graph_Editor
         {
             if (_selectedVertex1 != null && _selectedVertex2 != null)
             {
-                // TODO: fix bug here : 'key was not presented'
                 Vertex vertex1 = _visualVerticies[_selectedVertex1];
                 Vertex vertex2 = _visualVerticies[_selectedVertex2];
                 Connection connection = new Connection(vertex1, vertex2, 1);
                 _graph.AddConnection(connection);
+
+                ClearSelectedVerticies();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool TryRemoveConnection()
+        {
+            if (_selectedVertex1 != null && _selectedVertex2 != null)
+            {
+                Vertex vertex1 = _visualVerticies[_selectedVertex1];
+                Vertex vertex2 = _visualVerticies[_selectedVertex2];
+                Connection connection1 = _graph.GetConnection(vertex1, vertex2);
+                Connection connection2 = _graph.GetConnection(vertex2, vertex1);
+
+                if (connection1 != null){
+                    _graph.RemoveConnection(connection1);
+                }
+                if (connection2 != null)
+                {
+                    _graph.RemoveConnection(connection2);
+                }
 
                 ClearSelectedVerticies();
 
