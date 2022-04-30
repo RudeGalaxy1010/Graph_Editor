@@ -39,20 +39,59 @@ namespace Graph_Base
             }
         }
 
-        public void AddConnection(Connection connection)
+        public bool TryCreateConnection(Vertex vertex1, Vertex vertex2, float weight = 1)
         {
-            if (connection != null && _connections.Contains(connection) == false)
+            // Create not directed connection
+            if (_connections.FirstOrDefault(c => 
+                c.Vertex1.Equals(vertex2) 
+                && c.Vertex2.Equals(vertex1)
+                && c.IsDirected) != null)
             {
-                _connections.Add(connection);
+                if (TryRemoveConnection(vertex2, vertex1))
+                {
+                    Connection connection = new Connection(vertex1, vertex2, weight);
+                    _connections.Add(connection);
+                    return true;
+                }
             }
+            // if connection already exists
+            else if (_connections.FirstOrDefault(c =>
+                c.Vertex1.Equals(vertex1)
+                && c.Vertex2.Equals(vertex2)) == null)
+            {
+                Connection connection = new Connection(vertex1, vertex2, weight, true);
+                _connections.Add(connection);
+                return true;
+            }
+
+            return false;
         }
 
-        public void RemoveConnection(Connection connection)
+        public bool TryRemoveConnection(Vertex vertex1, Vertex vertex2)
         {
-            if (Connections.Contains(connection))
+            Connection connection1 = GetConnection(vertex1, vertex2);
+            Connection connection2 = GetConnection(vertex2, vertex1);
+
+            if (connection1 != null && connection2 != null)
             {
-                _connections.Remove(connection);
+                _connections.Remove(connection1);
+                _connections.Remove(connection2);
+                return true;
             }
+
+            if (connection1 != null)
+            {
+                _connections.Remove(connection1);
+                return true;
+            }
+
+            if (connection2 != null)
+            {
+                _connections.Remove(connection2);
+                return true;
+            }
+
+            return false;
         }
 
         public IEnumerable<Connection> FindConnections(Vertex vertex)
@@ -64,7 +103,7 @@ namespace Graph_Base
 
         public Connection GetConnection(Vertex vertex1, Vertex vertex2)
         {
-            return Connections.FirstOrDefault(c => c.StartsWith(vertex1) && c.EndsWith(vertex2));
+            return _connections.FirstOrDefault(c => c.StartsWith(vertex1) && c.EndsWith(vertex2));
         }
 
         public float[,] GetAdjacencyMatrix()

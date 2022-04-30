@@ -47,6 +47,7 @@
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.weightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
             this.VertexContextMenu.SuspendLayout();
             this.ModeContextMenu.SuspendLayout();
@@ -92,9 +93,12 @@
             // 
             // MainPictureBox
             // 
-            this.MainPictureBox.Dock = System.Windows.Forms.DockStyle.Right;
+            this.MainPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.MainPictureBox.Location = new System.Drawing.Point(102, 0);
             this.MainPictureBox.Margin = new System.Windows.Forms.Padding(0);
+            this.MainPictureBox.MaximumSize = new System.Drawing.Size(1920, 1080);
             this.MainPictureBox.Name = "MainPictureBox";
             this.MainPictureBox.Size = new System.Drawing.Size(698, 450);
             this.MainPictureBox.TabIndex = 4;
@@ -176,9 +180,10 @@
             this.ModeContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.editToolStripMenuItem,
             this.connectToolStripMenuItem,
-            this.disconnectToolStripMenuItem});
+            this.disconnectToolStripMenuItem,
+            this.weightToolStripMenuItem});
             this.ModeContextMenu.Name = "ModeContextMenu";
-            this.ModeContextMenu.Size = new System.Drawing.Size(134, 70);
+            this.ModeContextMenu.Size = new System.Drawing.Size(134, 92);
             // 
             // editToolStripMenuItem
             // 
@@ -200,6 +205,13 @@
             this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.disconnectToolStripMenuItem.Text = "Disconnect";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
+            // 
+            // weightToolStripMenuItem
+            // 
+            this.weightToolStripMenuItem.Name = "weightToolStripMenuItem";
+            this.weightToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.weightToolStripMenuItem.Text = "Weight";
+            this.weightToolStripMenuItem.Click += new System.EventHandler(this.weightToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -250,5 +262,6 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem weightToolStripMenuItem;
     }
 }

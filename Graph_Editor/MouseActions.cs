@@ -12,20 +12,25 @@ namespace Graph_Editor
         Graph _graph;
         Dictionary<Control, Vertex> _visualVerticies;
 
-        Control? _selectedElement = null;
+        Control? _selectedMovable = null;
         Control? _selectedVertex1 = null;
         Control? _selectedVertex2 = null;
         Point _delta = new Point();
+
+        public bool BothVertexSelected => _selectedVertex1 != null && _selectedVertex2 != null;
+        public Control SelectedVertex1 => _selectedVertex1;
+        public Control SelectedVertex2 => _selectedVertex2;
 
         public MouseActions(Graph graph, Dictionary<Control, Vertex> visualVerticies)
         {
             _graph = graph;
             _visualVerticies = visualVerticies;
+            ClearSelectedVerticies();
         }
 
-        public void SelectElement(Control element)
+        public void SelectMovable(Control element)
         {
-            _selectedElement = element;
+            _selectedMovable = element;
             var center = new Point(element.Location.X - element.Width, element.Location.Y - (int)(element.Height * 1.5f));
             _delta = new Point(Cursor.Position.X - center.X, Cursor.Position.Y - center.Y);
         }
@@ -45,7 +50,7 @@ namespace Graph_Editor
 
         public void DeselectElement(Label? coordsText = null)
         {
-            _selectedElement = null;
+            _selectedMovable = null;
             if (coordsText != null)
             {
                 coordsText.Text = "";
@@ -58,12 +63,11 @@ namespace Graph_Editor
             {
                 Vertex vertex1 = _visualVerticies[_selectedVertex1];
                 Vertex vertex2 = _visualVerticies[_selectedVertex2];
-                Connection connection = new Connection(vertex1, vertex2, 1);
-                _graph.AddConnection(connection);
-
-                ClearSelectedVerticies();
-
-                return true;
+                if (_graph.TryCreateConnection(vertex1, vertex2))
+                {
+                    ClearSelectedVerticies();
+                    return true;
+                }
             }
 
             return false;
@@ -75,17 +79,8 @@ namespace Graph_Editor
             {
                 Vertex vertex1 = _visualVerticies[_selectedVertex1];
                 Vertex vertex2 = _visualVerticies[_selectedVertex2];
-                Connection connection1 = _graph.GetConnection(vertex1, vertex2);
-                Connection connection2 = _graph.GetConnection(vertex2, vertex1);
 
-                if (connection1 != null){
-                    _graph.RemoveConnection(connection1);
-                }
-                if (connection2 != null)
-                {
-                    _graph.RemoveConnection(connection2);
-                }
-
+                _graph.TryRemoveConnection(vertex1, vertex2);
                 ClearSelectedVerticies();
 
                 return true;
@@ -102,7 +97,7 @@ namespace Graph_Editor
 
         public void MoveElement(Control element, PictureBox mainPictureBox, Label? coordsText = null)
         {
-            if (element == null || element != _selectedElement)
+            if (element == null || element != _selectedMovable)
             {
                 return;
             }

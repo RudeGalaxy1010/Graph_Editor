@@ -15,6 +15,7 @@ namespace Graph_Editor
         Edit,
         Connect,
         Disconnect,
+        Weight
     }
 
     public partial class MainForm : Form
@@ -34,9 +35,8 @@ namespace Graph_Editor
             _visualVerticies = new Dictionary<Control, Vertex>();
             _mouseActions = new MouseActions(_graph, _visualVerticies);
             _canvas = new Bitmap(MainPictureBox.Width, MainPictureBox.Height);
-            _mode = Mode.Edit;
-            editToolStripMenuItem_Click(null, null);
 
+            ChangeMode(Mode.Edit);
             ClearCanvas();
         }
 
@@ -59,7 +59,7 @@ namespace Graph_Editor
             button.MouseDown += (s, e) => {
                 if (_mode == Mode.Edit)
                 {
-                    _mouseActions.SelectElement(button);
+                    _mouseActions.SelectMovable(button);
                 }
                 else if (_mode == Mode.Connect)
                 {
@@ -69,7 +69,12 @@ namespace Graph_Editor
                 {
                     _mouseActions.SelectVertex(button);
                 }
+                else if (_mode == Mode.Weight)
+                {
+                    _mouseActions.SelectVertex(button);
+                }
             };
+
             button.MouseUp += (s, e) =>
             {
                 if (_mode == Mode.Edit)
@@ -90,7 +95,15 @@ namespace Graph_Editor
                         DrawConnections();
                     }
                 }
+                else if (_mode == Mode.Weight)
+                {
+                    if (_mouseActions.BothVertexSelected)
+                    {
+                        // Create text and bind to connection
+                    }
+                }
             };
+
             button.MouseMove += (s, e) =>
             {
                 _mouseActions.MoveElement(button, MainPictureBox, CoordsText);
@@ -124,16 +137,17 @@ namespace Graph_Editor
 
                 Control vertexControl1 = _visualVerticies.First(v => v.Value.Equals(vertex1)).Key;
                 Control vertexControl2 = _visualVerticies.First(v => v.Value.Equals(vertex2)).Key;
-                DrawConnection(vertexControl1, vertexControl2);
+                DrawConnection(vertexControl1, vertexControl2, connection.IsDirected);
             }
         }
 
-        private void DrawConnection(Control vertexControl1, Control vertexControl2)
+        private void DrawConnection(Control vertexControl1, Control vertexControl2, bool isDirected)
         {
             Graphics graphics = Graphics.FromImage(_canvas);
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-            Pen pen = new Pen(Color.Black, 2);
+            var color = isDirected ? Color.Blue : Color.Black;
+            Pen pen = new Pen(color, 2);
             var vertexCenter1 = new Point(
                 vertexControl1.Location.X - MainPictureBox.Location.X + vertexControl1.Width / 2,
                 vertexControl1.Location.Y - MainPictureBox.Location.Y + vertexControl1.Height / 2);
@@ -192,6 +206,11 @@ namespace Graph_Editor
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ChangeMode(Mode.Disconnect);
+        }
+
+        private void weightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeMode(Mode.Weight);
         }
 
         private void ChangeMode(Mode mode)
