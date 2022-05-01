@@ -129,7 +129,7 @@ namespace Graph_Editor
             Vertex vertex1 = _visualVerticies[visualVertex1];
             Vertex vertex2 = _visualVerticies[visualVertex2];
             Connection connection1 = _graph.TryGetConnection(vertex1, vertex2);
-            Connection connection2 = _graph.TryGetConnection(vertex1, vertex2);
+            Connection connection2 = _graph.TryGetConnection(vertex2, vertex1);
             Connection connection;
 
             if (connection1 != null)
@@ -192,6 +192,7 @@ namespace Graph_Editor
         {
             // TODO: check if need to iterate throw each weight
             var weightConnectionPair = _visualWeights.FirstOrDefault(w => _graph.TryGetConnection(w.Value.Vertex1, w.Value.Vertex2) == null);
+            var con = _graph.TryGetConnection(weightConnectionPair.Value.Vertex1, weightConnectionPair.Value.Vertex2);
             if (weightConnectionPair.Key != null)
             {
                 Controls.Remove(weightConnectionPair.Key);
