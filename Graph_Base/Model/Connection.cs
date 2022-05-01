@@ -2,7 +2,7 @@
 {
     public class Connection
     {
-        public float Weight { get; private set; }
+        public float Weight { get; set; }
         public bool IsDirected { get; private set; }
 
         public Vertex Vertex1 => new Vertex(_vertex1);

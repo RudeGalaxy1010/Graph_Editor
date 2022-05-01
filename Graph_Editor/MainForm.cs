@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -22,6 +21,7 @@ namespace Graph_Editor
     {
         Graph _graph = new Graph();
         Dictionary<Control, Vertex> _visualVerticies;
+        Dictionary<Control, Connection> _visualWeights;
         MouseActions _mouseActions;
         Bitmap _canvas;
         Mode _mode;
@@ -33,6 +33,7 @@ namespace Graph_Editor
             InitializeComponent();
 
             _visualVerticies = new Dictionary<Control, Vertex>();
+            _visualWeights = new Dictionary<Control, Connection>();
             _mouseActions = new MouseActions(_graph, _visualVerticies);
             _canvas = new Bitmap(MainPictureBox.Width, MainPictureBox.Height);
 
@@ -46,10 +47,12 @@ namespace Graph_Editor
             Vertex vertex = new Vertex();
             _graph.AddVertex(vertex);
 
+            int xSize = 40;
+            int ySize = 40;
+
             Button button = new Button()
             {
-                Width = 40,
-                Height = 40,
+                Size = new Size(xSize, ySize),
                 Parent = MainPictureBox,
                 Location = new Point(ActiveForm.Width / 2, ActiveForm.Height / 2),
                 Text = $"{vertex.Id}",
@@ -93,13 +96,15 @@ namespace Graph_Editor
                     if (_mouseActions.TryRemoveConnection())
                     {
                         DrawConnections();
+                        RemoveExtraWeights();
                     }
                 }
                 else if (_mode == Mode.Weight)
                 {
                     if (_mouseActions.BothVertexSelected)
                     {
-                        // Create text and bind to connection
+                        TryCreateWeight(_mouseActions.SelectedVertex1, _mouseActions.SelectedVertex2);
+                        _mouseActions.ClearSelectedVerticies();
                     }
                 }
             };
@@ -108,6 +113,7 @@ namespace Graph_Editor
             {
                 _mouseActions.MoveElement(button, MainPictureBox, CoordsText);
                 DrawConnections();
+                DrawWeights();
             };
 
             Controls.Add(button);
@@ -117,13 +123,111 @@ namespace Graph_Editor
         }
         #endregion
 
-        #region Connections and drawing
+        #region Weight
+        private bool TryCreateWeight(Control visualVertex1, Control visualVertex2)
+        {
+            Vertex vertex1 = _visualVerticies[visualVertex1];
+            Vertex vertex2 = _visualVerticies[visualVertex2];
+            Connection connection1 = _graph.TryGetConnection(vertex1, vertex2);
+            Connection connection2 = _graph.TryGetConnection(vertex1, vertex2);
+            Connection connection;
+
+            if (connection1 != null)
+            {
+                connection = connection1;
+            }
+            else if (connection2 != null)
+            {
+                connection = connection2;
+            }
+            else
+            {
+                return false;
+            }
+
+
+            int xSize = 50;
+            int ySize = 20;
+
+            int xDelta = (visualVertex2.Location.X - visualVertex1.Location.X) / 2;
+            int yDelta = (visualVertex2.Location.Y - visualVertex1.Location.Y) / 2;
+            int xPosition = visualVertex1.Location.X + xDelta;
+            int yPosition = visualVertex1.Location.Y + yDelta;
+
+            TextBox weightText = new TextBox()
+            {
+                Size = new Size(xSize, ySize),
+                Location = new Point(xPosition, yPosition),
+                TextAlign = HorizontalAlignment.Center,
+                Text = connection.Weight.ToString(),
+            };
+
+            weightText.TextChanged += (s, e) => ChangeWeight(weightText);
+
+            Controls.Add(weightText);
+            weightText.BringToFront();
+
+            _visualWeights.Add(weightText, connection);
+
+            return true;
+        }
+
+        private void ChangeWeight(Control weight)
+        {
+            Connection connection = _visualWeights[weight];
+            float newWeight = connection.Weight;
+            if (float.TryParse(weight.Text, out newWeight))
+            {
+                connection.Weight = newWeight;
+            }
+            else
+            {
+                newWeight = connection.Weight;
+            }
+
+            weight.Text = newWeight.ToString();
+        }
+
+        private void RemoveExtraWeights()
+        {
+            // TODO: check if need to iterate throw each weight
+            var weightConnectionPair = _visualWeights.FirstOrDefault(w => _graph.TryGetConnection(w.Value.Vertex1, w.Value.Vertex2) == null);
+            if (weightConnectionPair.Key != null)
+            {
+                Controls.Remove(weightConnectionPair.Key);
+                _visualWeights.Remove(weightConnectionPair.Key);
+            }
+        }
+
+        private void DrawWeights()
+        {
+            for (int i = 0; i < _graph.Connections.Count; i++)
+            {
+                Connection connection = _graph.Connections[i];
+                Control visualVertex1 = _visualVerticies.FirstOrDefault(v => v.Value.Equals(connection.Vertex1)).Key;
+                Control visualVertex2 = _visualVerticies.FirstOrDefault(v => v.Value.Equals(connection.Vertex2)).Key;
+
+                int xDelta = (visualVertex2.Location.X - visualVertex1.Location.X) / 2;
+                int yDelta = (visualVertex2.Location.Y - visualVertex1.Location.Y) / 2;
+                int xPosition = visualVertex1.Location.X + xDelta;
+                int yPosition = visualVertex1.Location.Y + yDelta;
+
+                Control weight = _visualWeights.FirstOrDefault(w => w.Value.Equals(connection)).Key;
+                if (weight != null)
+                {
+                    weight.Location = new Point(xPosition, yPosition);
+                }
+            }
+        }
+        #endregion
+
         private void ModeButton_Click(object sender, EventArgs e)
         {
             _mouseActions.ClearSelectedVerticies();
             ModeContextMenu.Show(ModeButton, 0, ModeButton.Height);
         }
 
+        #region Drawing
         private void DrawConnections()
         {
             ClearCanvas();
@@ -180,6 +284,7 @@ namespace Graph_Editor
             }
 
             DrawConnections();
+            RemoveExtraWeights();
         }
 
         private void VertexContextMenu_Opened(object sender, EventArgs e)

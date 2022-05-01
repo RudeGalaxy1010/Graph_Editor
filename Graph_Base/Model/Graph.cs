@@ -69,8 +69,8 @@ namespace Graph_Base
 
         public bool TryRemoveConnection(Vertex vertex1, Vertex vertex2)
         {
-            Connection connection1 = GetConnection(vertex1, vertex2);
-            Connection connection2 = GetConnection(vertex2, vertex1);
+            Connection connection1 = TryGetConnection(vertex1, vertex2);
+            Connection connection2 = TryGetConnection(vertex2, vertex1);
 
             if (connection1 != null && connection2 != null)
             {
@@ -101,7 +101,7 @@ namespace Graph_Base
                    select connection;
         }
 
-        public Connection GetConnection(Vertex vertex1, Vertex vertex2)
+        public Connection TryGetConnection(Vertex vertex1, Vertex vertex2)
         {
             return _connections.FirstOrDefault(c => c.StartsWith(vertex1) && c.EndsWith(vertex2));
         }
@@ -111,6 +111,7 @@ namespace Graph_Base
             float[,] matrix = GetEmptyMatrix(_vertices.Count, _vertices.Count);
             for (int i = 0; i < _vertices.Count; i++)
             {
+                // TODO: fix weights
                 Connection connection = Connections.FirstOrDefault(c => c.StartsWith(_vertices[i]));
 
                 if (connection == null)
