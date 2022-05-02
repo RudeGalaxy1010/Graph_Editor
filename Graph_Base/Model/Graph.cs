@@ -135,7 +135,6 @@ namespace Graph_Base
             float[,] matrix = GetEmptyMatrix(_vertices.Count, _vertices.Count);
             for (int i = 0; i < _vertices.Count; i++)
             {
-                // TODO: fix weights
                 Connection connection = Connections.FirstOrDefault(c => c.StartsWith(_vertices[i]));
 
                 if (connection == null)

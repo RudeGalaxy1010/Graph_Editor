@@ -16,12 +16,13 @@ namespace Graph_Editor
 
     public class EditorController
     {
-        private PictureBox _pictureBox;
-        private Bitmap _canvas;
-        private DrawController _drawController;
+        private Graph _graph;
+        private UpdateController _updateController;
+
         private Control _selectedVertex1;
         private Control _selectedVertex2;
         private Control _heldVertex;
+        private Control _contextMenuVertex;
         private Point _delta;
 
         #region Events
@@ -30,18 +31,19 @@ namespace Graph_Editor
 
         public delegate void BothVerticiesSelectedDelegate(Control vertexControl1, Control vertexControl2);
         public event BothVerticiesSelectedDelegate BothVerticiesSelected;
+
+        public delegate void VertexDeletedDelegate(Control vertex);
+        public event VertexDeletedDelegate VertexDeleted;
         #endregion
 
-        public EditorController(PictureBox pictureBox)
+        public EditorController(Graph graph, UpdateController updateController)
         {
-            _pictureBox = pictureBox;
-            _canvas = new Bitmap(_pictureBox.Width, _pictureBox.Height);
-            _drawController = new DrawController();
+            _graph = graph;
+            _updateController = updateController;
             Mode = Mode.Edit;
 
-            _pictureBox.Image = _drawController.ClearCanvas(_canvas);
-            // TODO: create connection
-            BothVerticiesSelected += DrawConnection;
+            BothVerticiesSelected += (v1, v2) => CreateConnection();
+            BothVerticiesSelected += (v1, v2) => RemoveConnection();
         }
 
         public Mode Mode { get; private set; }
@@ -50,6 +52,8 @@ namespace Graph_Editor
         public void OnChangeMode(Mode mode)
         {
             Mode = mode;
+            _selectedVertex1 = null;
+            _selectedVertex2 = null;
             ModeChanged?.Invoke(Mode);
         }
 
@@ -75,12 +79,11 @@ namespace Graph_Editor
                     DeselectElement();
                     break;
                 case Mode.Connect:
-                    // Redraw connections
-                    break;
                 case Mode.Disconnect:
-                    DisconnectSelectedVerticies();
                     break;
             }
+
+            _updateController.UpdateWith(_graph);
         }
 
         public void OnMouseMove(Control box)
@@ -104,9 +107,21 @@ namespace Graph_Editor
             yPosition = yPosition > bottomBorder ? bottomBorder : yPosition;
 
             _heldVertex.Location = new Point(xPosition, yPosition);
+            _updateController.UpdateWith(_graph);
+        }
 
-            //DrawConnections();
-            //DrawWeights();
+        public void OnContextMenuSelectVertex(Control vertex)
+        {
+            _contextMenuVertex = vertex;
+        }
+
+        public void OnVertexRemove()
+        {
+            Vertex vertex = _updateController.GetVertexByControl(_contextMenuVertex);
+            _graph.RemoveVertex(vertex);
+            _updateController.UpdateWith(_graph);
+            VertexDeleted?.Invoke(_contextMenuVertex);
+            _contextMenuVertex = null;
         }
         #endregion
 
@@ -139,23 +154,31 @@ namespace Graph_Editor
             _heldVertex = null;
         }
 
-        private void DrawConnection(Control vertex1, Control vertex2)
+        private void CreateConnection()
         {
-            var vertexCenter1 = new Point(
-                vertex1.Location.X - _pictureBox.Location.X + vertex1.Width / 2,
-                vertex1.Location.Y - _pictureBox.Location.Y + vertex1.Height / 2);
-            var vertexCenter2 = new Point(
-                vertex2.Location.X - _pictureBox.Location.X + vertex2.Width / 2,
-                vertex2.Location.Y - _pictureBox.Location.Y + vertex2.Height / 2);
+            if (Mode != Mode.Connect)
+            {
+                return;
+            }
 
-            _pictureBox.Image = _drawController.DrawLine(_canvas, vertexCenter1, vertexCenter2, Color.Black);
+            Vertex vertex1 = _updateController.GetVertexByControl(_selectedVertex1);
+            Vertex vertex2 = _updateController.GetVertexByControl(_selectedVertex2);
+            _graph.TryCreateConnection(vertex1, vertex2);
+            _updateController.UpdateWith(_graph);
         }
 
-        private void DisconnectSelectedVerticies()
+        private void RemoveConnection()
         {
-            // TODO: replace
-            //_mouseActions.TryCreateConnection();
-            // Remove extra weights
+            if (Mode != Mode.Disconnect)
+            {
+                return;
+            }
+
+            Vertex vertex1 = _updateController.GetVertexByControl(_selectedVertex1);
+            Vertex vertex2 = _updateController.GetVertexByControl(_selectedVertex2);
+            _graph.TryRemoveConnection(vertex1, vertex2);
+
+            _updateController.UpdateWith(_graph);
         }
     }
 }
