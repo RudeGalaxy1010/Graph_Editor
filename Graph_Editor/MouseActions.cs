@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Graph_Editor
 {
-    internal class MouseActions
+    public class MouseActions
     {
         Graph _graph;
         Dictionary<Control, Vertex> _visualVerticies;

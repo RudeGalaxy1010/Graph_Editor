@@ -4,9 +4,12 @@ namespace Graph_Base
 {
     public class Vertex
     {
-        public int Id { get; set; }
+        public int Id { get; private set; }
 
-        public Vertex() { }
+        public Vertex(int id)
+        {
+            Id = id;
+        }
 
         public Vertex(Vertex vertex)
         {

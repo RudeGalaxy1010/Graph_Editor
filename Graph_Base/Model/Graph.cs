@@ -5,36 +5,41 @@ namespace Graph_Base
 {
     public class Graph
     {
-        public IReadOnlyList<Vertex> Vertices => _vertices;
-        public IReadOnlyList<Connection> Connections => _connections;
+        public const int Max_Verticies_Count = 100;
 
         private List<Vertex> _vertices;
         private List<Connection> _connections;
-        private List<int> _ids;
+        private IdController _idController;
 
         public Graph()
         {
             _vertices = new List<Vertex>();
             _connections = new List<Connection>();
-            _ids = new List<int>();
+            _idController = new IdController();
         }
 
-        public void AddVertex(Vertex vertex)
+        public IReadOnlyList<Vertex> Vertices => _vertices;
+        public IReadOnlyList<Connection> Connections => _connections;
+
+        public Vertex CreateVertex()
         {
-            if (vertex != null)
+            if (_vertices.Count == Max_Verticies_Count)
             {
-                vertex.Id = GetId();
-                _vertices.Add(vertex);
+                throw new System.Exception("Max verticies count");
             }
+
+            var newVertex = new Vertex(_idController.GetId());
+            _vertices.Add(newVertex);
+            return newVertex;
         }
 
         public void RemoveVertex(Vertex vertex)
         {
             if (_vertices.Contains(vertex))
             {
-                _ids.Remove(vertex.Id);
+                _idController.TryRemoveId(vertex.Id);
                 _vertices.Remove(vertex);
-                List<Connection> connections = FindConnections(vertex).ToList();
+                List<Connection> connections = FindAnyConnections(vertex).ToList();
                 _connections = _connections.Except(connections).ToList();
             }
         }
@@ -69,8 +74,8 @@ namespace Graph_Base
 
         public bool TryRemoveConnection(Vertex vertex1, Vertex vertex2)
         {
-            Connection connection1 = TryGetConnection(vertex1, vertex2);
-            Connection connection2 = TryGetConnection(vertex2, vertex1);
+            Connection connection1 = FindExactConnection(vertex1, vertex2);
+            Connection connection2 = FindExactConnection(vertex2, vertex1);
 
             if (connection1 != null && connection2 != null)
             {
@@ -94,17 +99,36 @@ namespace Graph_Base
             return false;
         }
 
-        public IEnumerable<Connection> FindConnections(Vertex vertex)
+        #region Find connections
+        public IEnumerable<Connection> FindAnyConnections(Vertex vertex)
         {
             return from connection in _connections
                    where connection.StartsWith(vertex) || connection.EndsWith(vertex)
                    select connection;
         }
 
-        public Connection TryGetConnection(Vertex vertex1, Vertex vertex2)
+        public IEnumerable<Connection> FindExactConnections(Vertex vertex)
+        {
+            return from connection in _connections
+                   where connection.StartsWith(vertex)
+                   select connection;
+        }
+
+        public Connection FindExactConnection(Vertex vertex1)
+        {
+            return _connections.FirstOrDefault(c => c.StartsWith(vertex1));
+        }
+
+        public Connection FindExactConnection(Vertex vertex1, Vertex vertex2)
         {
             return _connections.FirstOrDefault(c => c.StartsWith(vertex1) && c.EndsWith(vertex2));
         }
+
+        public Connection FindAnyConnection(Vertex vertex1)
+        {
+            return _connections.FirstOrDefault(c => c.StartsWith(vertex1) || c.EndsWith(vertex1));
+        }
+        #endregion
 
         public float[,] GetAdjacencyMatrix()
         {
@@ -142,21 +166,6 @@ namespace Graph_Base
             }
 
             return matrix;
-        }
-
-        private int GetId()
-        {
-            for (int i = 0; i < _ids.Count + 1; i++)
-            {
-                int id = i + 1;
-                if (_ids.Contains(id) == false)
-                {
-                    _ids.Add(id);
-                    return id;
-                }
-            }
-
-            return -1;
         }
     }
 }
