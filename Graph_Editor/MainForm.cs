@@ -40,7 +40,8 @@ namespace Graph_Editor
         private void Subscribe()
         {
             _editorController.ModeChanged += (mode) => ModeButton.Text = mode.ToString();
-            _editorController.VertexDeleted += (vertex) => Controls.Remove(vertex);
+            _updateController.VertexDeleted += (vertex) => Controls.Remove(vertex);
+            _updateController.WeightDeleted += (weight) => Controls.Remove(weight);
         }
 
         #region Actions
@@ -60,6 +61,22 @@ namespace Graph_Editor
                 return;
             }
 
+            Vertex newVertex;
+            Control vertex = CreateVertex(out newVertex);
+
+            vertex.MouseDown += (s, e) => _editorController.OnMouseDown(vertex);
+            vertex.MouseUp += (s, e) => _editorController.OnMouseUp(vertex);
+            vertex.MouseMove += (s, e) => _editorController.OnMouseMove(MainPictureBox);
+
+            _updateController.AddVertexControl(vertex, newVertex);
+
+            Controls.Add(vertex);
+            vertex.BringToFront();
+        }
+        #endregion
+
+        public Control CreateVertex(out Vertex newVertex)
+        {
             Vertex vertex = _graph.CreateVertex();
 
             Button button = new Button()
@@ -71,60 +88,22 @@ namespace Graph_Editor
                 ContextMenuStrip = VertexContextMenu,
             };
 
-            button.MouseDown += (s, e) => _editorController.OnMouseDown(button);
-            button.MouseUp += (s, e) => _editorController.OnMouseUp(button);
-            button.MouseMove += (s, e) => _editorController.OnMouseMove(MainPictureBox);
-
-            _updateController.AddVertexControl(button, vertex);
-
-            Controls.Add(button);
-            button.BringToFront();
+            newVertex = vertex;
+            return button;
         }
-        #endregion
 
-        #region Weight
-        private bool TryCreateWeight(Control visualVertex1, Control visualVertex2)
+        public Control CreateWeight()
         {
-            //Vertex vertex1 = _visualVerticies[visualVertex1];
-            //Vertex vertex2 = _visualVerticies[visualVertex2];
-            //Connection connection1 = _graph.FindExactConnection(vertex1, vertex2);
-            //Connection connection2 = _graph.FindExactConnection(vertex2, vertex1);
-            //Connection connection;
-
-            //if (connection1 != null)
-            //{
-            //    connection = connection1;
-            //}
-            //else if (connection2 != null)
-            //{
-            //    connection = connection2;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
-
-            int xDelta = (visualVertex2.Location.X - visualVertex1.Location.X) / 2;
-            int yDelta = (visualVertex2.Location.Y - visualVertex1.Location.Y) / 2;
-            int xPosition = visualVertex1.Location.X + xDelta;
-            int yPosition = visualVertex1.Location.Y + yDelta;
-
             TextBox weightText = new TextBox()
             {
                 Size = new Size(Weight_Text_Width, Weight_Text_Height),
-                Location = new Point(xPosition, yPosition),
                 TextAlign = HorizontalAlignment.Center,
-                //Text = connection.Weight.ToString(),
             };
-
-            weightText.TextChanged += (s, e) => ChangeWeight(weightText);
 
             Controls.Add(weightText);
             weightText.BringToFront();
 
-            //_visualWeights.Add(weightText, connection);
-
-            return true;
+            return weightText;
         }
 
         private void ChangeWeight(Control weight)
@@ -142,41 +121,6 @@ namespace Graph_Editor
 
             //weight.Text = newWeight.ToString();
         }
-
-        private void RemoveExtraWeights()
-        {
-            // TODO: check if need to iterate throw each weight
-            //var weightConnectionPair = _visualWeights.FirstOrDefault(w => _graph.FindExactConnection(w.Value.Vertex1, w.Value.Vertex2) == null);
-            //var con = _graph.FindExactConnection(weightConnectionPair.Value.Vertex1, weightConnectionPair.Value.Vertex2);
-            //if (weightConnectionPair.Key != null)
-            //{
-            //    Controls.Remove(weightConnectionPair.Key);
-            //    _visualWeights.Remove(weightConnectionPair.Key);
-            //}
-        }
-
-        private void DrawWeights()
-        {
-            for (int i = 0; i < _graph.Connections.Count; i++)
-            {
-                //Connection connection = _graph.Connections[i];
-                //Control visualVertex1 = _visualVerticies.FirstOrDefault(v => v.Value.Equals(connection.Vertex1)).Key;
-                //Control visualVertex2 = _visualVerticies.FirstOrDefault(v => v.Value.Equals(connection.Vertex2)).Key;
-
-                //int xDelta = (visualVertex2.Location.X - visualVertex1.Location.X) / 2;
-                //int yDelta = (visualVertex2.Location.Y - visualVertex1.Location.Y) / 2;
-                //int xPosition = visualVertex1.Location.X + xDelta;
-                //int yPosition = visualVertex1.Location.Y + yDelta;
-
-                //Control weight = _visualWeights.FirstOrDefault(w => w.Value.Equals(connection)).Key;
-                //if (weight != null)
-                //{
-                //    weight.Location = new Point(xPosition, yPosition);
-                //}
-            }
-        }
-        #endregion
-
         #region Graph
         private void AdjacencyMatrixButton_Click(object sender, EventArgs e)
         {

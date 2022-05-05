@@ -63,7 +63,7 @@ namespace Graph_Editor
             {
                 Vertex vertex1 = _visualVerticies[_selectedVertex1];
                 Vertex vertex2 = _visualVerticies[_selectedVertex2];
-                if (_graph.TryCreateConnection(vertex1, vertex2))
+                if (_graph.TryCreateConnection(vertex1, vertex2) != null)
                 {
                     ClearSelectedVerticies();
                     return true;

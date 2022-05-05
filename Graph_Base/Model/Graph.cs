@@ -40,11 +40,15 @@ namespace Graph_Base
                 _idController.TryRemoveId(vertex.Id);
                 _vertices.Remove(vertex);
                 List<Connection> connections = FindAnyConnections(vertex).ToList();
-                _connections = _connections.Except(connections).ToList();
+
+                for (int i = 0; i < connections.Count; i++)
+                {
+                    TryRemoveConnection(connections[i].Vertex1, connections[i].Vertex2);
+                }
             }
         }
 
-        public bool TryCreateConnection(Vertex vertex1, Vertex vertex2, float weight = 1)
+        public Connection TryCreateConnection(Vertex vertex1, Vertex vertex2, float weight = 1)
         {
             // Create not directed connection
             if (_connections.FirstOrDefault(c => 
@@ -52,11 +56,11 @@ namespace Graph_Base
                 && c.Vertex2.Equals(vertex1)
                 && c.IsDirected) != null)
             {
-                if (TryRemoveConnection(vertex2, vertex1))
+                if (TryRemoveConnection(vertex2, vertex1) != null)
                 {
                     Connection connection = new Connection(vertex1, vertex2, weight);
                     _connections.Add(connection);
-                    return true;
+                    return connection;
                 }
             }
             // if connection already exists
@@ -66,37 +70,30 @@ namespace Graph_Base
             {
                 Connection connection = new Connection(vertex1, vertex2, weight, true);
                 _connections.Add(connection);
-                return true;
+                return connection;
             }
 
-            return false;
+            return null;
         }
 
-        public bool TryRemoveConnection(Vertex vertex1, Vertex vertex2)
+        public Connection TryRemoveConnection(Vertex vertex1, Vertex vertex2)
         {
             Connection connection1 = FindExactConnection(vertex1, vertex2);
             Connection connection2 = FindExactConnection(vertex2, vertex1);
 
-            if (connection1 != null && connection2 != null)
-            {
-                _connections.Remove(connection1);
-                _connections.Remove(connection2);
-                return true;
-            }
-
             if (connection1 != null)
             {
                 _connections.Remove(connection1);
-                return true;
+                return connection1;
             }
 
             if (connection2 != null)
             {
                 _connections.Remove(connection2);
-                return true;
+                return connection2;
             }
 
-            return false;
+            return null;
         }
 
         #region Find connections

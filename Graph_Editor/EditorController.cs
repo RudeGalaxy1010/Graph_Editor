@@ -1,8 +1,5 @@
 ﻿using Graph_Base;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Graph_Editor
@@ -26,14 +23,11 @@ namespace Graph_Editor
         private Point _delta;
 
         #region Events
-        public delegate void ModeChangedDelegate (Mode mode);
+        public delegate void ModeChangedDelegate(Mode mode);
         public event ModeChangedDelegate ModeChanged;
 
         public delegate void BothVerticiesSelectedDelegate(Control vertexControl1, Control vertexControl2);
         public event BothVerticiesSelectedDelegate BothVerticiesSelected;
-
-        public delegate void VertexDeletedDelegate(Control vertex);
-        public event VertexDeletedDelegate VertexDeleted;
         #endregion
 
         public EditorController(Graph graph, UpdateController updateController)
@@ -120,7 +114,6 @@ namespace Graph_Editor
             Vertex vertex = _updateController.GetVertexByControl(_contextMenuVertex);
             _graph.RemoveVertex(vertex);
             _updateController.UpdateWith(_graph);
-            VertexDeleted?.Invoke(_contextMenuVertex);
             _contextMenuVertex = null;
         }
         #endregion
@@ -164,6 +157,26 @@ namespace Graph_Editor
             Vertex vertex1 = _updateController.GetVertexByControl(_selectedVertex1);
             Vertex vertex2 = _updateController.GetVertexByControl(_selectedVertex2);
             _graph.TryCreateConnection(vertex1, vertex2);
+            CreateWeight();
+            _updateController.UpdateWith(_graph);
+        }
+
+        private void CreateWeight()
+        {
+            if (Mode != Mode.Connect)
+            {
+                return;
+            }
+
+            Vertex vertex1 = _updateController.GetVertexByControl(_selectedVertex1);
+            Vertex vertex2 = _updateController.GetVertexByControl(_selectedVertex2);
+            Connection connection = _graph.FindExactConnection(vertex1, vertex2);
+
+            Control control = (Form.ActiveForm as MainForm).CreateWeight();
+
+            control.TextChanged += (s, e) => ChangeWeight(control);
+
+            _updateController.AddWeightControl(control, connection);
             _updateController.UpdateWith(_graph);
         }
 
@@ -176,9 +189,49 @@ namespace Graph_Editor
 
             Vertex vertex1 = _updateController.GetVertexByControl(_selectedVertex1);
             Vertex vertex2 = _updateController.GetVertexByControl(_selectedVertex2);
+            //RemoveWeight();
             _graph.TryRemoveConnection(vertex1, vertex2);
-
             _updateController.UpdateWith(_graph);
+        }
+
+        //private void RemoveWeight()
+        //{
+        //    if (_selectedVertex1 != null && _selectedVertex2 != null)
+        //    {
+        //        Vertex vertex1 = _updateController.GetVertexByControl(_selectedVertex1);
+        //        Vertex vertex2 = _updateController.GetVertexByControl(_selectedVertex2);
+        //        Connection connection = _graph.FindExactConnection(vertex1, vertex2);
+        //        Control weight = _updateController.TryRemoveWeightControl(connection);
+        //        WeightDeleted?.Invoke(weight);
+        //    }
+        //    else if (_contextMenuVertex != null)
+        //    {
+        //        Vertex vertex = _updateController.GetVertexByControl(_contextMenuVertex);
+        //        List<Connection> connections = _graph.FindAnyConnections(vertex).ToList();
+        //        for (int i = 0; i < connections.Count; i++)
+        //        {
+        //            Control weight = _updateController.TryRemoveWeightControl(connections[i]);
+        //            WeightDeleted?.Invoke(weight);
+        //        }
+        //    }
+        //}
+
+        private void ChangeWeight(Control weight)
+        {
+            Connection connection = _updateController.GetConnectionByControl(weight);
+
+            if (connection == null)
+            {
+                return;
+            }
+
+            float weightValue = connection.Weight;
+            if (float.TryParse(weight.Text, out weightValue))
+            {
+                connection.Weight = weightValue;
+            }
+
+            weight.Text = weightValue.ToString();
         }
     }
 }
