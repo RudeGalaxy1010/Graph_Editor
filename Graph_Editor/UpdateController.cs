@@ -57,11 +57,14 @@ namespace Graph_Editor
 
         public void AddWeightControl(Control control, Connection connection)
         {
-            var pair = new KeyValuePair<Control, Connection>(control, connection);
-            if (_visualWeights.Contains(pair) == false)
+            Control existingControl = GetControlByConnection(connection);
+
+            if (existingControl != null)
             {
-                _visualWeights.Add(control, connection);
+                TryRemoveWeightControl(existingControl);
             }
+
+            _visualWeights.Add(control, connection);
         }
 
         public void TryRemoveWeightControl(Control control)
