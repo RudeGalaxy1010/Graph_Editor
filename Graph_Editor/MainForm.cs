@@ -53,7 +53,6 @@ namespace Graph_Editor
         private void deleteVertexToolStripMenuItem_Click(object sender, EventArgs e) => _editorController.OnVertexRemove();
         #endregion
 
-        #region Vertex Control
         private void AddVertexButton_Click(object sender, EventArgs e)
         {
             if (_graph.Vertices.Count >= Graph.Max_Verticies_Count)
@@ -73,7 +72,6 @@ namespace Graph_Editor
             Controls.Add(vertex);
             vertex.BringToFront();
         }
-        #endregion
 
         public Control CreateVertex(out Vertex newVertex)
         {
@@ -105,23 +103,8 @@ namespace Graph_Editor
 
             return weightText;
         }
-
-        private void ChangeWeight(Control weight)
-        {
-            //Connection connection = _visualWeights[weight];
-            //float newWeight = connection.Weight;
-            //if (float.TryParse(weight.Text, out newWeight))
-            //{
-            //    connection.Weight = newWeight;
-            //}
-            //else
-            //{
-            //    newWeight = connection.Weight;
-            //}
-
-            //weight.Text = newWeight.ToString();
-        }
         #region Graph
+
         private void AdjacencyMatrixButton_Click(object sender, EventArgs e)
         {
             var form = new Form()

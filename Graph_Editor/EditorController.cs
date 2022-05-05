@@ -189,32 +189,9 @@ namespace Graph_Editor
 
             Vertex vertex1 = _updateController.GetVertexByControl(_selectedVertex1);
             Vertex vertex2 = _updateController.GetVertexByControl(_selectedVertex2);
-            //RemoveWeight();
             _graph.TryRemoveConnection(vertex1, vertex2);
             _updateController.UpdateWith(_graph);
         }
-
-        //private void RemoveWeight()
-        //{
-        //    if (_selectedVertex1 != null && _selectedVertex2 != null)
-        //    {
-        //        Vertex vertex1 = _updateController.GetVertexByControl(_selectedVertex1);
-        //        Vertex vertex2 = _updateController.GetVertexByControl(_selectedVertex2);
-        //        Connection connection = _graph.FindExactConnection(vertex1, vertex2);
-        //        Control weight = _updateController.TryRemoveWeightControl(connection);
-        //        WeightDeleted?.Invoke(weight);
-        //    }
-        //    else if (_contextMenuVertex != null)
-        //    {
-        //        Vertex vertex = _updateController.GetVertexByControl(_contextMenuVertex);
-        //        List<Connection> connections = _graph.FindAnyConnections(vertex).ToList();
-        //        for (int i = 0; i < connections.Count; i++)
-        //        {
-        //            Control weight = _updateController.TryRemoveWeightControl(connections[i]);
-        //            WeightDeleted?.Invoke(weight);
-        //        }
-        //    }
-        //}
 
         private void ChangeWeight(Control weight)
         {
@@ -225,13 +202,12 @@ namespace Graph_Editor
                 return;
             }
 
-            float weightValue = connection.Weight;
-            if (float.TryParse(weight.Text, out weightValue))
+            if (float.TryParse(weight.Text, out float weightValue))
             {
                 connection.Weight = weightValue;
             }
 
-            weight.Text = weightValue.ToString();
+            weight.Text = connection.Weight.ToString();
         }
     }
 }
