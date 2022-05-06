@@ -132,17 +132,11 @@ namespace Graph_Base
             float[,] matrix = GetEmptyMatrix(_vertices.Count, _vertices.Count);
             for (int i = 0; i < _vertices.Count; i++)
             {
-                List<Connection> connections = FindAnyConnections(_vertices[i]).ToList();
+                List<Connection> connections = FindExactConnections(_vertices[i]).ToList();
                 
                 for (int j = 0; j < connections.Count; j++)
                 {
                     Connection connection = connections[j];
-
-                    if (connection.StartsWith(_vertices[i]) == false)
-                    {
-                        continue;
-                    }
-
                     matrix[i, _vertices.IndexOf(connection.Vertex2)] = connection.Weight;
                     
                     if (connection.IsDirected == false)
