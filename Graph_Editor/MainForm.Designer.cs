@@ -146,6 +146,7 @@
             this.label2.Size = new System.Drawing.Size(38, 15);
             this.label2.TabIndex = 7;
             this.label2.Text = "label2";
+            this.label2.Visible = false;
             // 
             // label3
             // 
@@ -155,6 +156,7 @@
             this.label3.Size = new System.Drawing.Size(38, 15);
             this.label3.TabIndex = 8;
             this.label3.Text = "label3";
+            this.label3.Visible = false;
             // 
             // label4
             // 
@@ -164,6 +166,7 @@
             this.label4.Size = new System.Drawing.Size(38, 15);
             this.label4.TabIndex = 9;
             this.label4.Text = "label4";
+            this.label4.Visible = false;
             // 
             // label5
             // 
@@ -173,6 +176,7 @@
             this.label5.Size = new System.Drawing.Size(38, 15);
             this.label5.TabIndex = 10;
             this.label5.Text = "label5";
+            this.label5.Visible = false;
             // 
             // ModeContextMenu
             // 
