@@ -1,10 +1,8 @@
 ﻿using Graph_Base;
 using Graph_Base.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Graph_Editor
@@ -33,6 +31,7 @@ namespace Graph_Editor
             _editorController = new EditorController(_graph, _updateController);
 
             ModeButton.Text = _editorController.Mode.ToString();
+            MainPictureBox.SizeMode = PictureBoxSizeMode.Normal;
             MainPictureBox.Image = _canvas;
             Subscribe();
         }
@@ -42,6 +41,15 @@ namespace Graph_Editor
             _editorController.ModeChanged += (mode) => ModeButton.Text = mode.ToString();
             _updateController.VertexDeleted += (vertex) => Controls.Remove(vertex);
             _updateController.WeightDeleted += (weight) => Controls.Remove(weight);
+            SizeChanged += (s, e) => ResizeCanvas();
+        }
+
+        private void ResizeCanvas()
+        {
+            MainPictureBox.Size = new Size(Size.Width - 118, Size.Height - 48);
+            _canvas = new Bitmap(Size.Width - 118, Size.Height - 48);
+            MainPictureBox.Image = _canvas;
+            _updateController.UpdateWith(_graph);
         }
 
         #region Actions
@@ -53,6 +61,7 @@ namespace Graph_Editor
         private void deleteVertexToolStripMenuItem_Click(object sender, EventArgs e) => _editorController.OnVertexRemove();
         #endregion
 
+        #region Factory
         private void AddVertexButton_Click(object sender, EventArgs e)
         {
             if (_graph.Vertices.Count >= Graph.Max_Verticies_Count)
@@ -103,6 +112,8 @@ namespace Graph_Editor
 
             return weightText;
         }
+        #endregion
+
         #region Graph
 
         private void AdjacencyMatrixButton_Click(object sender, EventArgs e)
@@ -145,7 +156,7 @@ namespace Graph_Editor
             Graphics graphics = Graphics.FromImage(image);
             // TODO: change capture size
             graphics.CopyFromScreen(ActiveForm.Location, new Point(-(MainPictureBox.Location.X + 8), -30), ActiveForm.Size);
-            
+
             SaveFileDialog saveFileDialog = new SaveFileDialog()
             {
                 InitialDirectory = @"c:\Documents",

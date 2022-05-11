@@ -108,13 +108,13 @@
             this.VertexContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteVertexToolStripMenuItem});
             this.VertexContextMenu.Name = "VertexContextMenu";
-            this.VertexContextMenu.Size = new System.Drawing.Size(143, 26);
+            this.VertexContextMenu.Size = new System.Drawing.Size(181, 48);
             this.VertexContextMenu.Opened += new System.EventHandler(this.VertexContextMenu_Opened);
             // 
             // deleteVertexToolStripMenuItem
             // 
             this.deleteVertexToolStripMenuItem.Name = "deleteVertexToolStripMenuItem";
-            this.deleteVertexToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.deleteVertexToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deleteVertexToolStripMenuItem.Text = "Delete vertex";
             this.deleteVertexToolStripMenuItem.Click += new System.EventHandler(this.deleteVertexToolStripMenuItem_Click);
             // 

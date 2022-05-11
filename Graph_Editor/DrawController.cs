@@ -23,33 +23,43 @@ namespace Graph_Editor
             return _canvas;
         }
 
-        // TODO: Пересчитывать при start > end
         public Bitmap DrawArrowLine(Point start, Point end, Color color, int lineWidth = 2)
         {
-            int xArrowOffset = 15;
-            int yArrowOffset = 0;
+            int xCornersOffset = 20;
+            int yCornersOffset = 6;
+            int arrowOffset = 20;
 
             float vectorLength = (float)Math.Sqrt(Math.Pow(end.X - start.X, 2) + Math.Pow(end.Y - start.Y, 2));
             float angle = (float)Math.Asin((end.Y - start.Y) / vectorLength);
 
+            float vectorLengthWithOffset = vectorLength - arrowOffset;
+
+            if (end.X < start.X)
+            {
+                angle = -angle;
+                xCornersOffset = -xCornersOffset;
+                yCornersOffset = -yCornersOffset;
+                vectorLengthWithOffset = -vectorLengthWithOffset;
+            }
+
             int topX = (int)(start.X + (end.X - start.X) * Math.Cos(angle));
             int topY = (int)(start.Y + (end.X - start.X) * Math.Sin(angle));
-
-            int xCornersOffset = 20;
-            int yCornersOffset = 6;
 
             Graphics graphics = Graphics.FromImage(_canvas);
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             Brush brush = new SolidBrush(color);
 
-            int leftX = (int)(start.X + (end.X - start.X - xCornersOffset) * Math.Cos(angle) - (yCornersOffset) * Math.Sin(angle));
-            int leftY = (int)(start.Y + (end.X - start.X - xCornersOffset) * Math.Sin(angle) + (yCornersOffset) * Math.Cos(angle));
+            int leftX = (int)(start.X + (end.X - start.X - xCornersOffset) * Math.Cos(angle) - yCornersOffset * Math.Sin(angle));
+            int leftY = (int)(start.Y + (end.X - start.X - xCornersOffset) * Math.Sin(angle) + yCornersOffset * Math.Cos(angle));
 
-            int rightX = (int)(start.X + (end.X - start.X - xCornersOffset) * Math.Cos(angle) - (-yCornersOffset) * Math.Sin(angle));
-            int rightY = (int)(start.Y + (end.X - start.X - xCornersOffset) * Math.Sin(angle) + (-yCornersOffset) * Math.Cos(angle));
+            int rightX = (int)(start.X + (end.X - start.X - xCornersOffset) * Math.Cos(angle) + yCornersOffset * Math.Sin(angle));
+            int rightY = (int)(start.Y + (end.X - start.X - xCornersOffset) * Math.Sin(angle) - yCornersOffset * Math.Cos(angle));
 
-            int deltaX = end.X - topX - xArrowOffset;
-            int deltaY = end.Y - topY - yArrowOffset;
+            int newEndX = (int)(start.X + (vectorLengthWithOffset) * Math.Cos(angle));
+            int newEndY = (int)(start.Y + (vectorLengthWithOffset) * Math.Sin(angle));
+
+            int deltaX = newEndX - topX;
+            int deltaY = newEndY - topY;
 
             Point leftAngle = new Point(leftX + deltaX, leftY + deltaY);
             Point rightAngle = new Point(rightX + deltaX, rightY + deltaY);
