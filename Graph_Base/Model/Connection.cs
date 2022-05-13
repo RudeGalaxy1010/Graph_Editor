@@ -1,5 +1,8 @@
-﻿namespace Graph_Base
+﻿using System;
+
+namespace Graph_Base
 {
+    [Serializable]
     public class Connection
     {
         public float Weight { get; set; }

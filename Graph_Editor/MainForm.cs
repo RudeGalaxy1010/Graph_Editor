@@ -4,6 +4,8 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace Graph_Editor
 {
@@ -16,10 +18,11 @@ namespace Graph_Editor
         private const int Weight_Text_Height = 20;
 
         private Graph _graph = new Graph();
+        private Serializer _serializer;
         private UpdateController _updateController;
         private DrawController _drawController;
-        EditorController _editorController;
-        Bitmap _canvas;
+        private EditorController _editorController;
+        private Bitmap _canvas;
 
         public MainForm()
         {
@@ -29,6 +32,7 @@ namespace Graph_Editor
             _drawController = new DrawController(_canvas);
             _updateController = new UpdateController(MainPictureBox, _drawController);
             _editorController = new EditorController(_graph, _updateController);
+            _serializer = new Serializer();
 
             ModeButton.Text = _editorController.Mode.ToString();
             MainPictureBox.SizeMode = PictureBoxSizeMode.Normal;
@@ -41,7 +45,7 @@ namespace Graph_Editor
             _editorController.ModeChanged += (mode) => ModeButton.Text = mode.ToString();
             _updateController.VertexDeleted += (vertex) => Controls.Remove(vertex);
             _updateController.WeightDeleted += (weight) => Controls.Remove(weight);
-            SizeChanged += (s, e) => ResizeCanvas();
+            //SizeChanged += (s, e) => ResizeCanvas();
         }
 
         private void ResizeCanvas()
@@ -85,6 +89,7 @@ namespace Graph_Editor
         public Control CreateVertex(out Vertex newVertex)
         {
             Vertex vertex = _graph.CreateVertex();
+            //Bitmap bitmap = new Bitmap(@"D:\C# projects\Graph_Editor\cloud.png");
 
             Button button = new Button()
             {
@@ -93,7 +98,15 @@ namespace Graph_Editor
                 Location = new Point(ActiveForm.Width / 2, ActiveForm.Height / 2),
                 Text = $"{vertex.Id}",
                 ContextMenuStrip = VertexContextMenu,
+                BackgroundImageLayout = ImageLayout.Stretch,
+                //BackgroundImage = bitmap,
             };
+
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderSize = 0;
+            button.FlatAppearance.MouseDownBackColor = Color.White;
+            button.FlatAppearance.MouseOverBackColor = Color.White;
+            button.BackColor = Color.White;
 
             newVertex = vertex;
             return button;
@@ -168,6 +181,37 @@ namespace Graph_Editor
             {
                 string path = saveFileDialog.FileName;
                 image.Save(path, ImageFormat.Png);
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog()
+            {
+                InitialDirectory = @"c:\Documents",
+                Filter = "Json (*.json)|*.json|All files (*.*)|*.*",
+                FileName = "Graph",
+            };
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                _serializer.Serialize(_graph, saveFileDialog.FileName);
+            }
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog()
+            {
+                InitialDirectory = @"c:\Documents",
+                Filter = "Json (*.json)|*.json|All files (*.*)|*.*",
+            };
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                _graph = _serializer.Deserialize<Graph>(openFileDialog.FileName);
+                _editorController = new EditorController(_graph, _updateController);
+                _updateController.UpdateWith(_graph);
             }
         }
         #endregion

@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Graph_Base.Helpers;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Graph_Base
 {
+    [Serializable]
     public class Graph
     {
         public const int Max_Verticies_Count = 100;
@@ -10,12 +13,14 @@ namespace Graph_Base
         private List<Vertex> _vertices;
         private List<Connection> _connections;
         private IdController _idController;
+        private Algorithms _algorithms;
 
         public Graph()
         {
             _vertices = new List<Vertex>();
             _connections = new List<Connection>();
             _idController = new IdController();
+            _algorithms = new Algorithms();
         }
 
         public IReadOnlyList<Vertex> Vertices => _vertices;
@@ -25,7 +30,7 @@ namespace Graph_Base
         {
             if (_vertices.Count == Max_Verticies_Count)
             {
-                throw new System.Exception("Max verticies count");
+                throw new Exception("Max verticies count");
             }
 
             var newVertex = new Vertex(_idController.GetId());
@@ -129,7 +134,7 @@ namespace Graph_Base
 
         public float[,] GetAdjacencyMatrix()
         {
-            float[,] matrix = GetEmptyMatrix(_vertices.Count, _vertices.Count);
+            float[,] matrix = _algorithms.GetEmptyMatrix(_vertices.Count, _vertices.Count);
             for (int i = 0; i < _vertices.Count; i++)
             {
                 List<Connection> connections = FindExactConnections(_vertices[i]).ToList();
@@ -143,20 +148,6 @@ namespace Graph_Base
                     {
                         matrix[_vertices.IndexOf(connection.Vertex2), i] = connection.Weight;
                     }
-                }
-            }
-
-            return matrix;
-        }
-
-        private float[,] GetEmptyMatrix(int sizeX, int sizeY)
-        {
-            float[,] matrix = new float[sizeX, sizeY];
-            for (int i = 0; i < sizeX; i++)
-            {
-                for (int j = 0; j < sizeY; j++)
-                {
-                    matrix[i, j] = 0;
                 }
             }
 

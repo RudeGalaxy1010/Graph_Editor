@@ -2,9 +2,12 @@
 
 namespace Graph_Base
 {
+    [Serializable]
     public class Vertex
     {
-        public int Id { get; private set; }
+        public int Id;
+
+        public Vertex() { }
 
         public Vertex(int id)
         {

@@ -47,16 +47,21 @@
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
             this.VertexContextMenu.SuspendLayout();
             this.ModeContextMenu.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // AddVertexButton
             // 
-            this.AddVertexButton.Location = new System.Drawing.Point(12, 12);
+            this.AddVertexButton.Location = new System.Drawing.Point(12, 32);
             this.AddVertexButton.Name = "AddVertexButton";
-            this.AddVertexButton.Size = new System.Drawing.Size(75, 23);
+            this.AddVertexButton.Size = new System.Drawing.Size(75, 27);
             this.AddVertexButton.TabIndex = 0;
             this.AddVertexButton.Text = "Add vertex";
             this.AddVertexButton.UseVisualStyleBackColor = true;
@@ -82,9 +87,9 @@
             // 
             // ModeButton
             // 
-            this.ModeButton.Location = new System.Drawing.Point(12, 41);
+            this.ModeButton.Location = new System.Drawing.Point(12, 61);
             this.ModeButton.Name = "ModeButton";
-            this.ModeButton.Size = new System.Drawing.Size(75, 23);
+            this.ModeButton.Size = new System.Drawing.Size(75, 27);
             this.ModeButton.TabIndex = 3;
             this.ModeButton.Text = "Connect";
             this.ModeButton.UseVisualStyleBackColor = true;
@@ -108,21 +113,21 @@
             this.VertexContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteVertexToolStripMenuItem});
             this.VertexContextMenu.Name = "VertexContextMenu";
-            this.VertexContextMenu.Size = new System.Drawing.Size(181, 48);
+            this.VertexContextMenu.Size = new System.Drawing.Size(143, 26);
             this.VertexContextMenu.Opened += new System.EventHandler(this.VertexContextMenu_Opened);
             // 
             // deleteVertexToolStripMenuItem
             // 
             this.deleteVertexToolStripMenuItem.Name = "deleteVertexToolStripMenuItem";
-            this.deleteVertexToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteVertexToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.deleteVertexToolStripMenuItem.Text = "Delete vertex";
             this.deleteVertexToolStripMenuItem.Click += new System.EventHandler(this.deleteVertexToolStripMenuItem_Click);
             // 
             // AdjacencyMatrixButton
             // 
-            this.AdjacencyMatrixButton.Location = new System.Drawing.Point(12, 70);
+            this.AdjacencyMatrixButton.Location = new System.Drawing.Point(12, 90);
             this.AdjacencyMatrixButton.Name = "AdjacencyMatrixButton";
-            this.AdjacencyMatrixButton.Size = new System.Drawing.Size(75, 61);
+            this.AdjacencyMatrixButton.Size = new System.Drawing.Size(75, 65);
             this.AdjacencyMatrixButton.TabIndex = 5;
             this.AdjacencyMatrixButton.Text = "Get adjacency matrix";
             this.AdjacencyMatrixButton.UseVisualStyleBackColor = true;
@@ -130,9 +135,9 @@
             // 
             // ScreenshotButton
             // 
-            this.ScreenshotButton.Location = new System.Drawing.Point(12, 137);
+            this.ScreenshotButton.Location = new System.Drawing.Point(12, 157);
             this.ScreenshotButton.Name = "ScreenshotButton";
-            this.ScreenshotButton.Size = new System.Drawing.Size(75, 39);
+            this.ScreenshotButton.Size = new System.Drawing.Size(75, 43);
             this.ScreenshotButton.TabIndex = 6;
             this.ScreenshotButton.Text = "Save screenshot";
             this.ScreenshotButton.UseVisualStyleBackColor = true;
@@ -208,12 +213,46 @@
             this.disconnectToolStripMenuItem.Text = "Disconnect";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.TabIndex = 12;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.saveToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -226,6 +265,7 @@
             this.Controls.Add(this.CoordsText);
             this.Controls.Add(this.MainPictureBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.MaximumSize = new System.Drawing.Size(1920, 1080);
             this.MinimumSize = new System.Drawing.Size(500, 250);
             this.Name = "MainForm";
@@ -233,6 +273,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).EndInit();
             this.VertexContextMenu.ResumeLayout(false);
             this.ModeContextMenu.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -257,5 +299,9 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
     }
 }
