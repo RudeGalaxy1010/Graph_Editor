@@ -11,8 +11,8 @@ namespace Graph_Editor
     {
         private PictureBox _pictureBox;
         private DrawController _drawController;
-        private Dictionary<Control, Vertex> _visualVerticies;
-        private Dictionary<Control, Connection> _visualWeights;
+        public Dictionary<Control, Vertex> VisualVerticies;
+        public Dictionary<Control, Connection> VisualWeights;
 
         #region Events
         public delegate void VertexDeletedDelegate(Control vertex);
@@ -26,21 +26,29 @@ namespace Graph_Editor
         {
             _pictureBox = pictureBox;
             _drawController = drawController;
-            _visualVerticies = new Dictionary<Control, Vertex>();
-            _visualWeights = new Dictionary<Control, Connection>();
+            VisualVerticies = new Dictionary<Control, Vertex>();
+            VisualWeights = new Dictionary<Control, Connection>();
         }
 
-        public Control GetControlByVertex(Vertex vertex) => _visualVerticies.FirstOrDefault(v => v.Value.Equals(vertex)).Key;
-        public Vertex GetVertexByControl(Control control) => _visualVerticies.FirstOrDefault(v => v.Key.Equals(control)).Value;
-        public Control GetControlByConnection(Connection connection) => _visualWeights.FirstOrDefault(w => w.Value.Equals(connection)).Key;
-        public Connection GetConnectionByControl(Control control) => _visualWeights.FirstOrDefault(w => w.Key.Equals(control)).Value;
+        public UpdateController(PictureBox pictureBox, DrawController drawController, Dictionary<Control, Vertex> visualVerticies)
+        {
+            _pictureBox = pictureBox;
+            _drawController = drawController;
+            VisualVerticies = visualVerticies;
+            VisualWeights = new Dictionary<Control, Connection>();
+        }
+
+        public Control GetControlByVertex(Vertex vertex) => VisualVerticies.FirstOrDefault(v => v.Value.Equals(vertex)).Key;
+        public Vertex GetVertexByControl(Control control) => VisualVerticies.FirstOrDefault(v => v.Key.Equals(control)).Value;
+        public Control GetControlByConnection(Connection connection) => VisualWeights.FirstOrDefault(w => w.Value.Equals(connection)).Key;
+        public Connection GetConnectionByControl(Control control) => VisualWeights.FirstOrDefault(w => w.Key.Equals(control)).Value;
 
         public void AddVertexControl(Control control, Vertex vertex)
         {
             var pair = new KeyValuePair<Control, Vertex>(control, vertex);
-            if (_visualVerticies.Contains(pair) == false)
+            if (VisualVerticies.Contains(pair) == false)
             {
-                _visualVerticies.Add(control, vertex);
+                VisualVerticies.Add(control, vertex);
             }
         }
 
@@ -51,7 +59,7 @@ namespace Graph_Editor
                 return;
             }
 
-            _visualVerticies.Remove(control);
+            VisualVerticies.Remove(control);
             VertexDeleted?.Invoke(control);
         }
 
@@ -64,7 +72,7 @@ namespace Graph_Editor
                 TryRemoveWeightControl(existingControl);
             }
 
-            _visualWeights.Add(control, connection);
+            VisualWeights.Add(control, connection);
         }
 
         public void TryRemoveWeightControl(Control control)
@@ -74,7 +82,7 @@ namespace Graph_Editor
                 return;
             }
 
-            _visualWeights.Remove(control);
+            VisualWeights.Remove(control);
             WeightDeleted?.Invoke(control);
         }
 
@@ -89,7 +97,7 @@ namespace Graph_Editor
 
         private void UpdateVerticies(Graph graph)
         {
-            List<Control> extraVerticies = (from pair in _visualVerticies
+            List<Control> extraVerticies = (from pair in VisualVerticies
                                             where graph.Vertices.Contains(pair.Value) == false
                                             select pair.Key).ToList();
             for (int i = 0; i < extraVerticies.Count; i++)
@@ -100,7 +108,7 @@ namespace Graph_Editor
 
         private void UpdateWeights(Graph graph)
         {
-            List<Control> extraWeights = (from pair in _visualWeights
+            List<Control> extraWeights = (from pair in VisualWeights
                                           where graph.Connections.Contains(pair.Value) == false
                                           select pair.Key).ToList();
             for (int i = 0; i < extraWeights.Count; i++)
@@ -114,8 +122,8 @@ namespace Graph_Editor
             for (int i = 0; i < graph.Connections.Count; i++)
             {
                 Connection connection = graph.Connections[i];
-                Control vertex1 = _visualVerticies.FirstOrDefault(v => v.Value.Equals(connection.Vertex1)).Key;
-                Control vertex2 = _visualVerticies.FirstOrDefault(v => v.Value.Equals(connection.Vertex2)).Key;
+                Control vertex1 = VisualVerticies.FirstOrDefault(v => v.Value.Equals(connection.Vertex1)).Key;
+                Control vertex2 = VisualVerticies.FirstOrDefault(v => v.Value.Equals(connection.Vertex2)).Key;
 
                 DrawConnection(vertex1, vertex2, connection.IsDirected);
             }
@@ -145,15 +153,15 @@ namespace Graph_Editor
             for (int i = 0; i < graph.Connections.Count; i++)
             {
                 Connection connection = graph.Connections[i];
-                Control visualVertex1 = _visualVerticies.FirstOrDefault(v => v.Value.Equals(connection.Vertex1)).Key;
-                Control visualVertex2 = _visualVerticies.FirstOrDefault(v => v.Value.Equals(connection.Vertex2)).Key;
+                Control visualVertex1 = VisualVerticies.FirstOrDefault(v => v.Value.Equals(connection.Vertex1)).Key;
+                Control visualVertex2 = VisualVerticies.FirstOrDefault(v => v.Value.Equals(connection.Vertex2)).Key;
 
                 int xDelta = (visualVertex2.Location.X - visualVertex1.Location.X) / 2;
                 int yDelta = (visualVertex2.Location.Y - visualVertex1.Location.Y) / 2;
                 int xPosition = visualVertex1.Location.X + xDelta;
                 int yPosition = visualVertex1.Location.Y + yDelta;
 
-                Control weight = _visualWeights.FirstOrDefault(w => w.Value.Equals(connection)).Key;
+                Control weight = VisualWeights.FirstOrDefault(w => w.Value.Equals(connection)).Key;
                 if (weight != null)
                 {
                     weight.Text = connection.Weight.ToString();

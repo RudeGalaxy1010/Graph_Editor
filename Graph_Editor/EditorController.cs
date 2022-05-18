@@ -172,7 +172,7 @@ namespace Graph_Editor
             Vertex vertex2 = _updateController.GetVertexByControl(_selectedVertex2);
             Connection connection = _graph.FindExactConnection(vertex1, vertex2);
 
-            Control control = (Form.ActiveForm as MainForm).CreateWeight();
+            Control control = (MainForm.ActiveForm as MainForm).CreateWeight();
 
             control.TextChanged += (s, e) => ChangeWeight(control);
 

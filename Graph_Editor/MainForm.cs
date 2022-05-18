@@ -4,8 +4,10 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using System.Linq;
 using Newtonsoft.Json;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Graph_Editor
 {
@@ -45,7 +47,6 @@ namespace Graph_Editor
             _editorController.ModeChanged += (mode) => ModeButton.Text = mode.ToString();
             _updateController.VertexDeleted += (vertex) => Controls.Remove(vertex);
             _updateController.WeightDeleted += (weight) => Controls.Remove(weight);
-            //SizeChanged += (s, e) => ResizeCanvas();
         }
 
         private void ResizeCanvas()
@@ -68,13 +69,18 @@ namespace Graph_Editor
         #region Factory
         private void AddVertexButton_Click(object sender, EventArgs e)
         {
+            CreateControl();
+        }
+
+        public Control CreateControl()
+        {
             if (_graph.Vertices.Count >= Graph.Max_Verticies_Count)
             {
-                return;
+                return null;
             }
 
-            Vertex newVertex;
-            Control vertex = CreateVertex(out newVertex);
+            Vertex newVertex = _graph.CreateVertex();
+            Control vertex = CreateVertex(newVertex);
 
             vertex.MouseDown += (s, e) => _editorController.OnMouseDown(vertex);
             vertex.MouseUp += (s, e) => _editorController.OnMouseUp(vertex);
@@ -84,19 +90,43 @@ namespace Graph_Editor
 
             Controls.Add(vertex);
             vertex.BringToFront();
+
+            return vertex;
         }
 
-        public Control CreateVertex(out Vertex newVertex)
+        public Control CreateControl(Vertex vertex, ControlData control)
         {
-            Vertex vertex = _graph.CreateVertex();
+            if (_graph.Vertices.Count >= Graph.Max_Verticies_Count)
+            {
+                return null;
+            }
+
+            Control result = CreateVertex(vertex);
+
+            result.MouseDown += (s, e) => _editorController.OnMouseDown(result);
+            result.MouseUp += (s, e) => _editorController.OnMouseUp(result);
+            result.MouseMove += (s, e) => _editorController.OnMouseMove(MainPictureBox);
+
+            Controls.Add(result);
+            result.BringToFront();
+
+            result.Location = new Point(control.XLocation, control.YLocation);
+            result.Text = control.Text;
+            result.Size = new Size(control.XSize, control.YSize);
+
+            return result;
+        }
+
+        public Control CreateVertex(Vertex newVertex)
+        {
             //Bitmap bitmap = new Bitmap(@"D:\C# projects\Graph_Editor\cloud.png");
 
             Button button = new Button()
             {
                 Size = new Size(Vertex_Width, Vertex_Height),
                 Parent = MainPictureBox,
-                Location = new Point(ActiveForm.Width / 2, ActiveForm.Height / 2),
-                Text = $"{vertex.Id}",
+                Location = new Point(Width / 2, Height / 2),
+                Text = $"{newVertex.Id}",
                 ContextMenuStrip = VertexContextMenu,
                 BackgroundImageLayout = ImageLayout.Stretch,
                 //BackgroundImage = bitmap,
@@ -108,7 +138,6 @@ namespace Graph_Editor
             button.FlatAppearance.MouseOverBackColor = Color.White;
             button.BackColor = Color.White;
 
-            newVertex = vertex;
             return button;
         }
 
@@ -195,7 +224,14 @@ namespace Graph_Editor
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                _serializer.Serialize(_graph, saveFileDialog.FileName);
+                var save = new Save();
+                save.Graph = _graph;
+                save.VerteciesData = new ControlsData()
+                {
+                    Controls = (from controlPair in _updateController.VisualVerticies
+                                select new ControlData(controlPair.Key)).ToList()
+                };
+                _serializer.Serialize(save, saveFileDialog.FileName);
             }
         }
 
@@ -209,11 +245,62 @@ namespace Graph_Editor
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                _graph = _serializer.Deserialize<Graph>(openFileDialog.FileName);
+                ClearControls();
+
+                Dictionary<Control, Vertex> visualVerticies = new Dictionary<Control, Vertex>();
+                Save save = _serializer.Deserialize<Save>(openFileDialog.FileName);
+                _graph = save.Graph;
+
+                for (int i = 0; i < _graph.Vertices.Count; i++)
+                {
+                    Control control = CreateControl(_graph.Vertices[i], save.VerteciesData.Controls[i]);
+                    visualVerticies.Add(control, _graph.Vertices.First(v => v.Id == int.Parse(save.VerteciesData.Controls[i].Text)));
+                }
+
+                _updateController = new UpdateController(MainPictureBox, _drawController, visualVerticies);
                 _editorController = new EditorController(_graph, _updateController);
                 _updateController.UpdateWith(_graph);
+                Subscribe();
+
+                // Connections and weights
+                for (int i = 0; i < _graph.Connections.Count; i++)
+                {
+                    Connection connection = _graph.Connections[i];
+                    Control control1 = _updateController.GetControlByVertex(connection.Vertex1);
+                    Control control2 = _updateController.GetControlByVertex(connection.Vertex2);
+
+                    _editorController.OnChangeMode(Mode.Connect);
+                    _editorController.OnMouseDown(control1);
+                    _editorController.OnMouseDown(control2);
+
+                    if (connection.IsDirected == false)
+                    {
+                        _editorController.OnMouseDown(control2);
+                        _editorController.OnMouseDown(control1);
+                    }
+
+                    _editorController.OnChangeMode(Mode.Edit);
+                }
             }
         }
         #endregion
+
+        private void ClearControls()
+        {
+            foreach (var vertex in _updateController.VisualVerticies)
+            {
+                Controls.Remove(vertex.Key);
+            }
+
+            foreach (var weight in _updateController.VisualWeights)
+            {
+                Controls.Remove(weight.Key);
+            }
+
+            for (int i = 0; i < _updateController.VisualWeights.Count; i++)
+            {
+                Controls.RemoveAt(i);
+            }
+        }
     }
 }

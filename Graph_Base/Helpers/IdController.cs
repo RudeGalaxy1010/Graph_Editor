@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Graph_Base
 {
+    [Serializable]
     public class IdController
     {
-        private List<int> _ids;
+        public List<int> _ids;
 
         public IdController()
         {

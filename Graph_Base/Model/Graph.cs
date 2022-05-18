@@ -12,7 +12,7 @@ namespace Graph_Base
 
         private List<Vertex> _vertices;
         private List<Connection> _connections;
-        private IdController _idController;
+        public IdController _idController;
         private Algorithms _algorithms;
 
         public Graph()
@@ -23,8 +23,8 @@ namespace Graph_Base
             _algorithms = new Algorithms();
         }
 
-        public IReadOnlyList<Vertex> Vertices => _vertices;
-        public IReadOnlyList<Connection> Connections => _connections;
+        public List<Vertex> Vertices => _vertices;
+        public List<Connection> Connections => _connections;
 
         public Vertex CreateVertex()
         {
