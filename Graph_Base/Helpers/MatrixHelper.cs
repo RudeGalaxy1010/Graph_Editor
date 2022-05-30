@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Graph_Base.Helpers
 {
-    public class Algorithms
+    public class MatrixHelper
     {
         public float[,] GetEmptyMatrix(int sizeX, int sizeY)
         {

@@ -1,4 +1,5 @@
-﻿using Graph_Base.Helpers;
+﻿using Graph_Base.Algorithms;
+using Graph_Base.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +14,16 @@ namespace Graph_Base
         private List<Vertex> _vertices;
         private List<Connection> _connections;
         public IdController _idController;
-        private Algorithms _algorithms;
+        private MatrixHelper _matrixHelper;
+        private Algorithm _algorithm;
 
         public Graph()
         {
             _vertices = new List<Vertex>();
             _connections = new List<Connection>();
             _idController = new IdController();
-            _algorithms = new Algorithms();
+            _matrixHelper = new MatrixHelper();
+            _algorithm = new Algorithm();
         }
 
         public List<Vertex> Vertices => _vertices;
@@ -134,7 +137,7 @@ namespace Graph_Base
 
         public float[,] GetAdjacencyMatrix()
         {
-            float[,] matrix = _algorithms.GetEmptyMatrix(_vertices.Count, _vertices.Count);
+            float[,] matrix = _matrixHelper.GetEmptyMatrix(_vertices.Count, _vertices.Count);
             for (int i = 0; i < _vertices.Count; i++)
             {
                 List<Connection> connections = FindExactConnections(_vertices[i]).ToList();
@@ -148,6 +151,21 @@ namespace Graph_Base
                     {
                         matrix[_vertices.IndexOf(connection.Vertex2), i] = connection.Weight;
                     }
+                }
+            }
+
+            return matrix;
+        }
+
+        public float[,] GetShortestDistanceMatrix()
+        {
+            float[,] matrix = _matrixHelper.GetEmptyMatrix(_vertices.Count, _vertices.Count);
+            for (int i = 0; i < _vertices.Count; i++)
+            {
+                float[] shortestDistance = _algorithm.Dejikstra.GetShortestPaths(GetAdjacencyMatrix(), i);
+                for (int j = 0; j < shortestDistance.Length; j++)
+                {
+                    matrix[i, j] = shortestDistance[j];
                 }
             }
 

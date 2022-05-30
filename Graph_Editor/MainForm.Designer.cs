@@ -51,6 +51,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ShortestDistanceMatrixButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
             this.VertexContextMenu.SuspendLayout();
             this.ModeContextMenu.SuspendLayout();
@@ -135,7 +136,7 @@
             // 
             // ScreenshotButton
             // 
-            this.ScreenshotButton.Location = new System.Drawing.Point(12, 157);
+            this.ScreenshotButton.Location = new System.Drawing.Point(12, 236);
             this.ScreenshotButton.Name = "ScreenshotButton";
             this.ScreenshotButton.Size = new System.Drawing.Size(75, 43);
             this.ScreenshotButton.TabIndex = 6;
@@ -246,12 +247,23 @@
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
+            // ShortestDistanceMatrixButton
+            // 
+            this.ShortestDistanceMatrixButton.Location = new System.Drawing.Point(12, 161);
+            this.ShortestDistanceMatrixButton.Name = "ShortestDistanceMatrixButton";
+            this.ShortestDistanceMatrixButton.Size = new System.Drawing.Size(75, 69);
+            this.ShortestDistanceMatrixButton.TabIndex = 13;
+            this.ShortestDistanceMatrixButton.Text = "Get shortest distance matrix";
+            this.ShortestDistanceMatrixButton.UseVisualStyleBackColor = true;
+            this.ShortestDistanceMatrixButton.Click += new System.EventHandler(this.ShortestDistanceMatrixButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.ShortestDistanceMatrixButton);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -303,5 +315,6 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.Button ShortestDistanceMatrixButton;
     }
 }

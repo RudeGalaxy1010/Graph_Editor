@@ -168,12 +168,12 @@ namespace Graph_Editor
                 MinimumSize = new Size(500, 500),
             };
 
-            var saveButton = new Button()
-            {
-                Text = "Save",
-                Size = new Size(form.Width - 25, 25),
-                Location = new Point(5, 5),
-            };
+            //var saveButton = new Button()
+            //{
+            //    Text = "Save",
+            //    Size = new Size(form.Width - 25, 25),
+            //    Location = new Point(5, 5),
+            //};
 
             var text = new TextBox()
             {
@@ -184,7 +184,31 @@ namespace Graph_Editor
                 TextAlign = HorizontalAlignment.Center,
             };
 
-            form.Controls.Add(saveButton);
+            //form.Controls.Add(saveButton);
+            form.Controls.Add(text);
+            text.BringToFront();
+            form.ShowDialog();
+        }
+
+        private void ShortestDistanceMatrixButton_Click(object sender, EventArgs e)
+        {
+            var form = new Form()
+            {
+                Width = 500,
+                Height = 500,
+                MaximumSize = new Size(500, 500),
+                MinimumSize = new Size(500, 500),
+            };
+
+            var text = new TextBox()
+            {
+                Text = _graph.GetShortestDistanceMatrix().GetTableFormat(),
+                Size = new Size(form.Width - 25, form.Height - 80),
+                Location = new Point(5, 35),
+                Multiline = true,
+                TextAlign = HorizontalAlignment.Center,
+            };
+
             form.Controls.Add(text);
             text.BringToFront();
             form.ShowDialog();
