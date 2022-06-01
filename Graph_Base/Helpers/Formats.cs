@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Graph_Base.Helpers
 {
@@ -20,6 +15,18 @@ namespace Graph_Base.Helpers
                     result += $"{matrix[i, j]}" + (j == matrix.GetLength(1) - 1 ? "" : "\t");
                 }
                 result += Environment.NewLine;
+            }
+
+            return result;
+        }
+
+        public static string GetTableFormat<T>(this T[] matrix)
+        {
+            string result = "";
+
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                result += $"{matrix[i]}"  + (i == matrix.Length - 1 ? "" : "\t");
             }
 
             return result;

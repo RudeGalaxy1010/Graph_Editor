@@ -171,5 +171,11 @@ namespace Graph_Base
 
             return matrix;
         }
+
+        public int[] GetShortestRoute(int startIndex, int endIndex)
+        {
+            int[] result = _algorithm.Dejikstra.GetShortestRoute(GetAdjacencyMatrix(), startIndex, endIndex);
+            return result;
+        }
     }
 }
