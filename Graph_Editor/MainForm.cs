@@ -180,15 +180,17 @@ namespace Graph_Editor
             {
                 Width = 500,
                 Height = 500,
-                MaximumSize = new Size(500, 500),
-                MinimumSize = new Size(500, 500),
+                Text = "Adjacency matrix",
             };
+
+            form.MaximumSize = new Size(form.Width, form.Height);
+            form.MinimumSize = new Size(form.Width, form.Height);
 
             var text = new TextBox()
             {
                 Text = _graph.GetAdjacencyMatrix().GetTableFormat(),
-                Size = new Size(form.Width - 25, form.Height - 80),
-                Location = new Point(5, 35),
+                Size = new Size(form.Width - 25, form.Height - 50),
+                Location = new Point(5, 5),
                 Multiline = true,
                 TextAlign = HorizontalAlignment.Center,
             };
@@ -204,15 +206,17 @@ namespace Graph_Editor
             {
                 Width = 500,
                 Height = 500,
-                MaximumSize = new Size(500, 500),
-                MinimumSize = new Size(500, 500),
+                Text = "Shortest distance",
             };
+
+            form.MaximumSize = new Size(form.Width, form.Height);
+            form.MinimumSize = new Size(form.Width, form.Height);
 
             var text = new TextBox()
             {
                 Text = _graph.GetShortestDistanceMatrix().GetTableFormat().Replace("3,4028235E+38", "-"),
-                Size = new Size(form.Width - 25, form.Height - 80),
-                Location = new Point(5, 35),
+                Size = new Size(form.Width - 25, form.Height - 50),
+                Location = new Point(5, 5),
                 Multiline = true,
                 TextAlign = HorizontalAlignment.Center,
             };
@@ -228,9 +232,11 @@ namespace Graph_Editor
             {
                 Width = 200,
                 Height = 125,
-                MaximumSize = new Size(200, 125),
-                MinimumSize = new Size(200, 125),
+                Text = "Route choose",
             };
+
+            form.MaximumSize = new Size(form.Width, form.Height);
+            form.MinimumSize = new Size(form.Width, form.Height);
 
             var label1 = new Label() 
             { 
@@ -294,15 +300,17 @@ namespace Graph_Editor
             {
                 Width = 500,
                 Height = 500,
-                MaximumSize = new Size(500, 500),
-                MinimumSize = new Size(500, 500),
+                Text = "Shortest route",
             };
+
+            form.MaximumSize = new Size(form.Width, form.Height);
+            form.MinimumSize = new Size(form.Width, form.Height);
 
             var text = new TextBox()
             {
                 Text = _graph.GetShortestRoute(startPointIndex, endPointIndex).GetTableFormat(),
-                Size = new Size(form.Width - 25, form.Height - 80),
-                Location = new Point(5, 35),
+                Size = new Size(form.Width - 25, form.Height - 50),
+                Location = new Point(5, 5),
                 Multiline = true,
                 TextAlign = HorizontalAlignment.Center,
             };
@@ -333,6 +341,32 @@ namespace Graph_Editor
             }
 
             return isValid;
+        }
+
+        private void serachInDepthToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new Form()
+            {
+                Width = 500,
+                Height = 500,
+                Text = "Search in depth",
+            };
+
+            form.MaximumSize = new Size(form.Width, form.Height);
+            form.MinimumSize = new Size(form.Width, form.Height);
+
+            var text = new TextBox()
+            {
+                Text = _graph.GetSearchInDeepth().GetTableFormat().Replace("0", "-"),
+                Size = new Size(form.Width - 25, form.Height - 50),
+                Location = new Point(5, 5),
+                Multiline = true,
+                TextAlign = HorizontalAlignment.Center,
+            };
+
+            form.Controls.Add(text);
+            text.BringToFront();
+            form.ShowDialog();
         }
         #endregion
 
@@ -480,30 +514,6 @@ namespace Graph_Editor
 
             form.Controls.Add(header);
             form.Controls.Add(text);
-            form.ShowDialog();
-        }
-
-        private void serachInDepthToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var form = new Form()
-            {
-                Width = 500,
-                Height = 500,
-                MaximumSize = new Size(500, 500),
-                MinimumSize = new Size(500, 500),
-            };
-
-            var text = new TextBox()
-            {
-                Text = _graph.GetSearchInDeepth().GetTableFormat().Replace("0", "-"),
-                Size = new Size(form.Width - 25, form.Height - 80),
-                Location = new Point(5, 35),
-                Multiline = true,
-                TextAlign = HorizontalAlignment.Center,
-            };
-
-            form.Controls.Add(text);
-            text.BringToFront();
             form.ShowDialog();
         }
     }
