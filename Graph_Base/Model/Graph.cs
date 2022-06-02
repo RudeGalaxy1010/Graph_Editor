@@ -137,7 +137,7 @@ namespace Graph_Base
 
         public float[,] GetAdjacencyMatrix()
         {
-            float[,] matrix = _matrixHelper.GetEmptyMatrix(_vertices.Count, _vertices.Count);
+            float[,] matrix = _matrixHelper.GetEmptyFMatrix(_vertices.Count, _vertices.Count);
             for (int i = 0; i < _vertices.Count; i++)
             {
                 List<Connection> connections = FindExactConnections(_vertices[i]).ToList();
@@ -159,7 +159,7 @@ namespace Graph_Base
 
         public float[,] GetShortestDistanceMatrix()
         {
-            float[,] matrix = _matrixHelper.GetEmptyMatrix(_vertices.Count, _vertices.Count);
+            float[,] matrix = _matrixHelper.GetEmptyFMatrix(_vertices.Count, _vertices.Count);
             for (int i = 0; i < _vertices.Count; i++)
             {
                 float[] shortestDistance = _algorithm.Dejikstra.GetShortestPaths(GetAdjacencyMatrix(), i);
@@ -175,6 +175,22 @@ namespace Graph_Base
         public int[] GetShortestRoute(int startIndex, int endIndex)
         {
             int[] result = _algorithm.Dejikstra.GetShortestRoute(GetAdjacencyMatrix(), startIndex, endIndex);
+            return result;
+        }
+
+        public int[,] GetSearchInDeepth()
+        {
+            int[,] result = new int[_vertices.Count, _vertices.Count];
+
+            for (int i = 0; i < _vertices.Count; i++)
+            {
+                int[] route = _algorithm.DeepFirstSearch.Pass(GetAdjacencyMatrix(), i);
+                for (int j = 0; j < route.Length; j++)
+                {
+                    result[i, j] = route[j];
+                }
+            }
+
             return result;
         }
     }

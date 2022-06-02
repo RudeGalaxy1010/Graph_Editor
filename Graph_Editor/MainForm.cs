@@ -210,7 +210,7 @@ namespace Graph_Editor
 
             var text = new TextBox()
             {
-                Text = _graph.GetShortestDistanceMatrix().GetTableFormat(),
+                Text = _graph.GetShortestDistanceMatrix().GetTableFormat().Replace("3,4028235E+38", "-"),
                 Size = new Size(form.Width - 25, form.Height - 80),
                 Location = new Point(5, 35),
                 Multiline = true,
@@ -446,6 +446,65 @@ namespace Graph_Editor
             {
                 Controls.RemoveAt(i);
             }
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new Form()
+            {
+                Width = 375,
+                Height = 300,
+                Text = "About",
+            };
+
+            form.MaximumSize = new Size(form.Width, form.Height);
+            form.MinimumSize = new Size(form.Width, form.Height);
+
+            var header = new Label()
+            {
+                Text = "About software",
+                Size = new Size(form.Width - 25, 25),
+                Location = new Point(0, 5),
+                TextAlign = ContentAlignment.MiddleCenter,
+            };
+
+            header.Font = new Font(header.Font, FontStyle.Bold);
+
+            var text = new Label()
+            {
+                Text = Constants.AboutMessage,
+                Size = new Size(form.Width - 25, form.Height - 55),
+                Location = new Point(0, 10),
+                TextAlign = ContentAlignment.MiddleCenter,
+            };
+
+            form.Controls.Add(header);
+            form.Controls.Add(text);
+            form.ShowDialog();
+        }
+
+        private void serachInDepthToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new Form()
+            {
+                Width = 500,
+                Height = 500,
+                MaximumSize = new Size(500, 500),
+                MinimumSize = new Size(500, 500),
+            };
+
+            var text = new TextBox()
+            {
+                Text = _graph.GetSearchInDeepth().GetTableFormat().Replace("0", "-"),
+                Size = new Size(form.Width - 25, form.Height - 80),
+                Location = new Point(5, 35),
+                Multiline = true,
+                TextAlign = HorizontalAlignment.Center,
+            };
+
+            form.Controls.Add(text);
+            text.BringToFront();
+            form.ShowDialog();
         }
     }
 }

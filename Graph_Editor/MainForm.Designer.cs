@@ -51,6 +51,8 @@
             this.adjacencyMatrixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shortestDistanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shortestRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.serachInDepthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteVertexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VertexContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.splitter = new System.Windows.Forms.Splitter();
@@ -111,7 +113,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(38, 15);
             this.label4.TabIndex = 9;
-            this.label4.Text = "label4";
+            this.label4.Text = "label4\r\n";
             this.label4.Visible = false;
             // 
             // label5
@@ -130,7 +132,8 @@
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem1,
-            this.calculationsToolStripMenuItem});
+            this.calculationsToolStripMenuItem,
+            this.aboutToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
             this.mainMenu.Size = new System.Drawing.Size(800, 24);
@@ -219,7 +222,8 @@
             this.calculationsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.adjacencyMatrixToolStripMenuItem,
             this.shortestDistanceToolStripMenuItem,
-            this.shortestRouteToolStripMenuItem});
+            this.shortestRouteToolStripMenuItem,
+            this.serachInDepthToolStripMenuItem});
             this.calculationsToolStripMenuItem.Name = "calculationsToolStripMenuItem";
             this.calculationsToolStripMenuItem.Size = new System.Drawing.Size(84, 20);
             this.calculationsToolStripMenuItem.Text = "Calculations";
@@ -227,23 +231,37 @@
             // adjacencyMatrixToolStripMenuItem
             // 
             this.adjacencyMatrixToolStripMenuItem.Name = "adjacencyMatrixToolStripMenuItem";
-            this.adjacencyMatrixToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.adjacencyMatrixToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.adjacencyMatrixToolStripMenuItem.Text = "Adjacency matrix";
             this.adjacencyMatrixToolStripMenuItem.Click += new System.EventHandler(this.adjacencyMatrixToolStripMenuItem_Click);
             // 
             // shortestDistanceToolStripMenuItem
             // 
             this.shortestDistanceToolStripMenuItem.Name = "shortestDistanceToolStripMenuItem";
-            this.shortestDistanceToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.shortestDistanceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.shortestDistanceToolStripMenuItem.Text = "Shortest distance";
             this.shortestDistanceToolStripMenuItem.Click += new System.EventHandler(this.shortestDistanceToolStripMenuItem_Click);
             // 
             // shortestRouteToolStripMenuItem
             // 
             this.shortestRouteToolStripMenuItem.Name = "shortestRouteToolStripMenuItem";
-            this.shortestRouteToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.shortestRouteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.shortestRouteToolStripMenuItem.Text = "Shortest route";
             this.shortestRouteToolStripMenuItem.Click += new System.EventHandler(this.shortestRouteToolStripMenuItem_Click);
+            // 
+            // serachInDepthToolStripMenuItem
+            // 
+            this.serachInDepthToolStripMenuItem.Name = "serachInDepthToolStripMenuItem";
+            this.serachInDepthToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.serachInDepthToolStripMenuItem.Text = "Serach in depth";
+            this.serachInDepthToolStripMenuItem.Click += new System.EventHandler(this.serachInDepthToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // deleteVertexToolStripMenuItem
             // 
@@ -341,5 +359,7 @@
         private System.Windows.Forms.Splitter splitter;
         private System.Windows.Forms.ContextMenuStrip PictureBoxContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem addVertexPictureBoxToolstripMenu;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem serachInDepthToolStripMenuItem;
     }
 }
