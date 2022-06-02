@@ -30,53 +30,37 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.AddVertexButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.CoordsText = new System.Windows.Forms.Label();
-            this.ModeButton = new System.Windows.Forms.Button();
             this.MainPictureBox = new System.Windows.Forms.PictureBox();
-            this.VertexContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.deleteVertexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.AdjacencyMatrixButton = new System.Windows.Forms.Button();
-            this.ScreenshotButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.ModeContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ShortestDistanceMatrixButton = new System.Windows.Forms.Button();
-            this.GetShortestRoute = new System.Windows.Forms.Button();
+            this.saveScreenshotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.addVertexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editModeToolstripItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.connectToolstripItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disconnectToolstripItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.calculationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.adjacencyMatrixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shortestDistanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shortestRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteVertexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.VertexContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.splitter = new System.Windows.Forms.Splitter();
+            this.PictureBoxContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addVertexPictureBoxToolstripMenu = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
+            this.mainMenu.SuspendLayout();
             this.VertexContextMenu.SuspendLayout();
-            this.ModeContextMenu.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
+            this.PictureBoxContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // AddVertexButton
-            // 
-            this.AddVertexButton.Location = new System.Drawing.Point(12, 32);
-            this.AddVertexButton.Name = "AddVertexButton";
-            this.AddVertexButton.Size = new System.Drawing.Size(75, 27);
-            this.AddVertexButton.TabIndex = 0;
-            this.AddVertexButton.Text = "Add vertex";
-            this.AddVertexButton.UseVisualStyleBackColor = true;
-            this.AddVertexButton.Click += new System.EventHandler(this.AddVertexButton_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 387);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "label1";
             // 
             // CoordsText
             // 
@@ -87,63 +71,18 @@
             this.CoordsText.Size = new System.Drawing.Size(0, 15);
             this.CoordsText.TabIndex = 2;
             // 
-            // ModeButton
-            // 
-            this.ModeButton.Location = new System.Drawing.Point(12, 61);
-            this.ModeButton.Name = "ModeButton";
-            this.ModeButton.Size = new System.Drawing.Size(75, 27);
-            this.ModeButton.TabIndex = 3;
-            this.ModeButton.Text = "Connect";
-            this.ModeButton.UseVisualStyleBackColor = true;
-            this.ModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-            // 
             // MainPictureBox
             // 
             this.MainPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.MainPictureBox.Location = new System.Drawing.Point(102, 0);
+            this.MainPictureBox.Location = new System.Drawing.Point(0, 24);
             this.MainPictureBox.Margin = new System.Windows.Forms.Padding(0);
             this.MainPictureBox.MaximumSize = new System.Drawing.Size(1920, 1080);
             this.MainPictureBox.Name = "MainPictureBox";
-            this.MainPictureBox.Size = new System.Drawing.Size(698, 450);
+            this.MainPictureBox.Size = new System.Drawing.Size(800, 426);
             this.MainPictureBox.TabIndex = 4;
             this.MainPictureBox.TabStop = false;
-            // 
-            // VertexContextMenu
-            // 
-            this.VertexContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deleteVertexToolStripMenuItem});
-            this.VertexContextMenu.Name = "VertexContextMenu";
-            this.VertexContextMenu.Size = new System.Drawing.Size(143, 26);
-            this.VertexContextMenu.Opened += new System.EventHandler(this.VertexContextMenu_Opened);
-            // 
-            // deleteVertexToolStripMenuItem
-            // 
-            this.deleteVertexToolStripMenuItem.Name = "deleteVertexToolStripMenuItem";
-            this.deleteVertexToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
-            this.deleteVertexToolStripMenuItem.Text = "Delete vertex";
-            this.deleteVertexToolStripMenuItem.Click += new System.EventHandler(this.deleteVertexToolStripMenuItem_Click);
-            // 
-            // AdjacencyMatrixButton
-            // 
-            this.AdjacencyMatrixButton.Location = new System.Drawing.Point(12, 90);
-            this.AdjacencyMatrixButton.Name = "AdjacencyMatrixButton";
-            this.AdjacencyMatrixButton.Size = new System.Drawing.Size(75, 65);
-            this.AdjacencyMatrixButton.TabIndex = 5;
-            this.AdjacencyMatrixButton.Text = "Get adjacency matrix";
-            this.AdjacencyMatrixButton.UseVisualStyleBackColor = true;
-            this.AdjacencyMatrixButton.Click += new System.EventHandler(this.AdjacencyMatrixButton_Click);
-            // 
-            // ScreenshotButton
-            // 
-            this.ScreenshotButton.Location = new System.Drawing.Point(12, 311);
-            this.ScreenshotButton.Name = "ScreenshotButton";
-            this.ScreenshotButton.Size = new System.Drawing.Size(75, 43);
-            this.ScreenshotButton.TabIndex = 6;
-            this.ScreenshotButton.Text = "Save screenshot";
-            this.ScreenshotButton.UseVisualStyleBackColor = true;
-            this.ScreenshotButton.Click += new System.EventHandler(this.ScreenshotButton_Click);
             // 
             // label2
             // 
@@ -168,7 +107,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(102, 191);
+            this.label4.Location = new System.Drawing.Point(0, 191);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(38, 15);
             this.label4.TabIndex = 9;
@@ -185,51 +124,24 @@
             this.label5.Text = "label5";
             this.label5.Visible = false;
             // 
-            // ModeContextMenu
+            // mainMenu
             // 
-            this.ModeContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editToolStripMenuItem,
-            this.connectToolStripMenuItem,
-            this.disconnectToolStripMenuItem});
-            this.ModeContextMenu.Name = "ModeContextMenu";
-            this.ModeContextMenu.Size = new System.Drawing.Size(134, 70);
-            // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.editToolStripMenuItem.Text = "Edit";
-            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
-            // 
-            // connectToolStripMenuItem
-            // 
-            this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
-            this.connectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.connectToolStripMenuItem.Text = "Connect";
-            this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
-            // 
-            // disconnectToolStripMenuItem
-            // 
-            this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.disconnectToolStripMenuItem.Text = "Disconnect";
-            this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
-            this.menuStrip1.TabIndex = 12;
-            this.menuStrip1.Text = "menuStrip1";
+            this.mainMenu.BackColor = System.Drawing.SystemColors.HighlightText;
+            this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.editToolStripMenuItem1,
+            this.calculationsToolStripMenuItem});
+            this.mainMenu.Location = new System.Drawing.Point(0, 0);
+            this.mainMenu.Name = "mainMenu";
+            this.mainMenu.Size = new System.Drawing.Size(800, 24);
+            this.mainMenu.TabIndex = 12;
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
-            this.saveToolStripMenuItem});
+            this.saveToolStripMenuItem,
+            this.saveScreenshotToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -237,36 +149,140 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
-            // ShortestDistanceMatrixButton
+            // saveScreenshotToolStripMenuItem
             // 
-            this.ShortestDistanceMatrixButton.Location = new System.Drawing.Point(12, 161);
-            this.ShortestDistanceMatrixButton.Name = "ShortestDistanceMatrixButton";
-            this.ShortestDistanceMatrixButton.Size = new System.Drawing.Size(75, 69);
-            this.ShortestDistanceMatrixButton.TabIndex = 13;
-            this.ShortestDistanceMatrixButton.Text = "Get shortest distance matrix";
-            this.ShortestDistanceMatrixButton.UseVisualStyleBackColor = true;
-            this.ShortestDistanceMatrixButton.Click += new System.EventHandler(this.ShortestDistanceMatrixButton_Click);
+            this.saveScreenshotToolStripMenuItem.Name = "saveScreenshotToolStripMenuItem";
+            this.saveScreenshotToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.saveScreenshotToolStripMenuItem.Text = "Save Screenshot";
+            this.saveScreenshotToolStripMenuItem.Click += new System.EventHandler(this.saveScreenshotToolStripMenuItem_Click);
             // 
-            // GetShortestRoute
+            // editToolStripMenuItem1
             // 
-            this.GetShortestRoute.Location = new System.Drawing.Point(12, 236);
-            this.GetShortestRoute.Name = "GetShortestRoute";
-            this.GetShortestRoute.Size = new System.Drawing.Size(75, 69);
-            this.GetShortestRoute.TabIndex = 14;
-            this.GetShortestRoute.Text = "Get shortest route";
-            this.GetShortestRoute.UseVisualStyleBackColor = true;
-            this.GetShortestRoute.Click += new System.EventHandler(this.GetShortestRoute_Click);
+            this.editToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addVertexToolStripMenuItem,
+            this.modeToolStripMenuItem});
+            this.editToolStripMenuItem1.Name = "editToolStripMenuItem1";
+            this.editToolStripMenuItem1.Size = new System.Drawing.Size(39, 20);
+            this.editToolStripMenuItem1.Text = "Edit";
+            // 
+            // addVertexToolStripMenuItem
+            // 
+            this.addVertexToolStripMenuItem.Name = "addVertexToolStripMenuItem";
+            this.addVertexToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.addVertexToolStripMenuItem.Text = "Add vertex";
+            this.addVertexToolStripMenuItem.Click += new System.EventHandler(this.addVertexToolStripMenuItem_Click);
+            // 
+            // modeToolStripMenuItem
+            // 
+            this.modeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editModeToolstripItem,
+            this.connectToolstripItem,
+            this.disconnectToolstripItem});
+            this.modeToolStripMenuItem.Name = "modeToolStripMenuItem";
+            this.modeToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.modeToolStripMenuItem.Text = "Connect";
+            // 
+            // editModeToolstripItem
+            // 
+            this.editModeToolstripItem.Name = "editModeToolstripItem";
+            this.editModeToolstripItem.Size = new System.Drawing.Size(133, 22);
+            this.editModeToolstripItem.Text = "Edit";
+            this.editModeToolstripItem.Click += new System.EventHandler(this.editModeToolstripItem_Click);
+            // 
+            // connectToolstripItem
+            // 
+            this.connectToolstripItem.Name = "connectToolstripItem";
+            this.connectToolstripItem.Size = new System.Drawing.Size(133, 22);
+            this.connectToolstripItem.Text = "Connect";
+            this.connectToolstripItem.Click += new System.EventHandler(this.connectToolstripItem_Click);
+            // 
+            // disconnectToolstripItem
+            // 
+            this.disconnectToolstripItem.Name = "disconnectToolstripItem";
+            this.disconnectToolstripItem.Size = new System.Drawing.Size(133, 22);
+            this.disconnectToolstripItem.Text = "Disconnect";
+            this.disconnectToolstripItem.Click += new System.EventHandler(this.disconnectToolstripItem_Click);
+            // 
+            // calculationsToolStripMenuItem
+            // 
+            this.calculationsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.adjacencyMatrixToolStripMenuItem,
+            this.shortestDistanceToolStripMenuItem,
+            this.shortestRouteToolStripMenuItem});
+            this.calculationsToolStripMenuItem.Name = "calculationsToolStripMenuItem";
+            this.calculationsToolStripMenuItem.Size = new System.Drawing.Size(84, 20);
+            this.calculationsToolStripMenuItem.Text = "Calculations";
+            // 
+            // adjacencyMatrixToolStripMenuItem
+            // 
+            this.adjacencyMatrixToolStripMenuItem.Name = "adjacencyMatrixToolStripMenuItem";
+            this.adjacencyMatrixToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.adjacencyMatrixToolStripMenuItem.Text = "Adjacency matrix";
+            this.adjacencyMatrixToolStripMenuItem.Click += new System.EventHandler(this.adjacencyMatrixToolStripMenuItem_Click);
+            // 
+            // shortestDistanceToolStripMenuItem
+            // 
+            this.shortestDistanceToolStripMenuItem.Name = "shortestDistanceToolStripMenuItem";
+            this.shortestDistanceToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.shortestDistanceToolStripMenuItem.Text = "Shortest distance";
+            this.shortestDistanceToolStripMenuItem.Click += new System.EventHandler(this.shortestDistanceToolStripMenuItem_Click);
+            // 
+            // shortestRouteToolStripMenuItem
+            // 
+            this.shortestRouteToolStripMenuItem.Name = "shortestRouteToolStripMenuItem";
+            this.shortestRouteToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.shortestRouteToolStripMenuItem.Text = "Shortest route";
+            this.shortestRouteToolStripMenuItem.Click += new System.EventHandler(this.shortestRouteToolStripMenuItem_Click);
+            // 
+            // deleteVertexToolStripMenuItem
+            // 
+            this.deleteVertexToolStripMenuItem.Name = "deleteVertexToolStripMenuItem";
+            this.deleteVertexToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.deleteVertexToolStripMenuItem.Text = "Delete vertex";
+            this.deleteVertexToolStripMenuItem.Click += new System.EventHandler(this.deleteVertexToolStripMenuItem_Click);
+            // 
+            // VertexContextMenu
+            // 
+            this.VertexContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteVertexToolStripMenuItem});
+            this.VertexContextMenu.Name = "VertexContextMenu";
+            this.VertexContextMenu.Size = new System.Drawing.Size(143, 26);
+            this.VertexContextMenu.Opened += new System.EventHandler(this.VertexContextMenu_Opened);
+            // 
+            // splitter
+            // 
+            this.splitter.Dock = System.Windows.Forms.DockStyle.Top;
+            this.splitter.Enabled = false;
+            this.splitter.Location = new System.Drawing.Point(0, 24);
+            this.splitter.Name = "splitter";
+            this.splitter.Size = new System.Drawing.Size(800, 3);
+            this.splitter.TabIndex = 13;
+            this.splitter.TabStop = false;
+            // 
+            // PictureBoxContextMenuStrip
+            // 
+            this.PictureBoxContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addVertexPictureBoxToolstripMenu});
+            this.PictureBoxContextMenuStrip.Name = "PictureBoxContextMenuStrip";
+            this.PictureBoxContextMenuStrip.Size = new System.Drawing.Size(132, 26);
+            // 
+            // addVertexPictureBoxToolstripMenu
+            // 
+            this.addVertexPictureBoxToolstripMenu.Name = "addVertexPictureBoxToolstripMenu";
+            this.addVertexPictureBoxToolstripMenu.Size = new System.Drawing.Size(131, 22);
+            this.addVertexPictureBoxToolstripMenu.Text = "Add vertex";
+            this.addVertexPictureBoxToolstripMenu.Click += new System.EventHandler(this.addVertexPictureBoxToolstripMenu_Click);
             // 
             // MainForm
             // 
@@ -274,60 +290,56 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.GetShortestRoute);
-            this.Controls.Add(this.ShortestDistanceMatrixButton);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.splitter);
+            this.Controls.Add(this.mainMenu);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.ScreenshotButton);
-            this.Controls.Add(this.AdjacencyMatrixButton);
-            this.Controls.Add(this.ModeButton);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.AddVertexButton);
             this.Controls.Add(this.CoordsText);
             this.Controls.Add(this.MainPictureBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip1;
+            this.MainMenuStrip = this.mainMenu;
             this.MaximumSize = new System.Drawing.Size(1920, 1080);
             this.MinimumSize = new System.Drawing.Size(500, 250);
             this.Name = "MainForm";
             this.Text = "GraphED";
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).EndInit();
+            this.mainMenu.ResumeLayout(false);
+            this.mainMenu.PerformLayout();
             this.VertexContextMenu.ResumeLayout(false);
-            this.ModeContextMenu.ResumeLayout(false);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.PictureBoxContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button AddVertexButton;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label CoordsText;
-        private System.Windows.Forms.Button ModeButton;
         private System.Windows.Forms.PictureBox MainPictureBox;
-        private System.Windows.Forms.ContextMenuStrip VertexContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem deleteVertexToolStripMenuItem;
-        private System.Windows.Forms.Button AdjacencyMatrixButton;
-        private System.Windows.Forms.Button ScreenshotButton;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ContextMenuStrip ModeContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip mainMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.Button ShortestDistanceMatrixButton;
-        private System.Windows.Forms.Button GetShortestRoute;
+        private System.Windows.Forms.ToolStripMenuItem saveScreenshotToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem addVertexToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem modeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editModeToolstripItem;
+        private System.Windows.Forms.ToolStripMenuItem connectToolstripItem;
+        private System.Windows.Forms.ToolStripMenuItem disconnectToolstripItem;
+        private System.Windows.Forms.ToolStripMenuItem calculationsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem adjacencyMatrixToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem shortestDistanceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem shortestRouteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteVertexToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip VertexContextMenu;
+        private System.Windows.Forms.Splitter splitter;
+        private System.Windows.Forms.ContextMenuStrip PictureBoxContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem addVertexPictureBoxToolstripMenu;
     }
 }

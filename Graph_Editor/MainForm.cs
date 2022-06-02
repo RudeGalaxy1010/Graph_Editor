@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -34,38 +35,43 @@ namespace Graph_Editor
             _editorController = new EditorController(_graph, _updateController);
             _serializer = new Serializer();
 
-            ModeButton.Text = _editorController.Mode.ToString();
+            modeToolStripMenuItem.Text = _editorController.Mode.ToString();
             MainPictureBox.SizeMode = PictureBoxSizeMode.Normal;
             MainPictureBox.Image = _canvas;
+            MainPictureBox.ContextMenuStrip = PictureBoxContextMenuStrip;
             Subscribe();
         }
 
         private void Subscribe()
         {
-            _editorController.ModeChanged += (mode) => ModeButton.Text = mode.ToString();
+            _editorController.ModeChanged += (mode) => modeToolStripMenuItem.Text = mode.ToString();
             _updateController.VertexDeleted += (vertex) => Controls.Remove(vertex);
             _updateController.WeightDeleted += (weight) => Controls.Remove(weight);
         }
 
-        private void ResizeCanvas()
-        {
-            MainPictureBox.Size = new Size(Size.Width - 118, Size.Height - 48);
-            _canvas = new Bitmap(Size.Width - 118, Size.Height - 48);
-            MainPictureBox.Image = _canvas;
-            _updateController.UpdateWith(_graph);
-        }
+        //private void ResizeCanvas()
+        //{
+        //    MainPictureBox.Size = new Size(Size.Width - 118, Size.Height - 48);
+        //    _canvas = new Bitmap(Size.Width - 118, Size.Height - 48);
+        //    MainPictureBox.Image = _canvas;
+        //    _updateController.UpdateWith(_graph);
+        //}
 
         #region Actions
-        private void editToolStripMenuItem_Click(object sender, EventArgs e) => _editorController.OnChangeMode(Mode.Edit);
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e) => _editorController.OnChangeMode(Mode.Connect);
-        private void ModeButton_Click(object sender, EventArgs e) => ModeContextMenu.Show(ModeButton, 0, ModeButton.Height);
-        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e) => _editorController.OnChangeMode(Mode.Disconnect);
+        private void editModeToolstripItem_Click(object sender, EventArgs e) => _editorController.OnChangeMode(Mode.Edit);
+        private void connectToolstripItem_Click(object sender, EventArgs e) => _editorController.OnChangeMode(Mode.Connect);
+        private void disconnectToolstripItem_Click(object sender, EventArgs e) => _editorController.OnChangeMode(Mode.Disconnect);
         private void VertexContextMenu_Opened(object sender, EventArgs e) => _editorController.OnContextMenuSelectVertex((sender as ContextMenuStrip).SourceControl);
         private void deleteVertexToolStripMenuItem_Click(object sender, EventArgs e) => _editorController.OnVertexRemove();
         #endregion
 
         #region Factory
-        private void AddVertexButton_Click(object sender, EventArgs e)
+        private void addVertexToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CreateControl();
+        }
+
+        private void addVertexPictureBoxToolstripMenu_Click(object sender, EventArgs e)
         {
             CreateControl();
         }
@@ -117,7 +123,13 @@ namespace Graph_Editor
 
         public Control CreateVertex(Vertex newVertex)
         {
-            //Bitmap bitmap = new Bitmap(@"D:\C# projects\Graph_Editor\cloud.png");
+            Bitmap bitmap = null;
+            string path = @$"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName}\Assets\VertexBackgroundImage.png";
+
+            if (File.Exists(path))
+            {
+                bitmap = new Bitmap(path);
+            }
 
             Button button = new Button()
             {
@@ -127,8 +139,12 @@ namespace Graph_Editor
                 Text = $"{newVertex.Id}",
                 ContextMenuStrip = VertexContextMenu,
                 BackgroundImageLayout = ImageLayout.Stretch,
-                //BackgroundImage = bitmap,
             };
+
+            if (bitmap != null)
+            {
+                button.BackgroundImage = bitmap;
+            }
 
             button.FlatStyle = FlatStyle.Flat;
             button.FlatAppearance.BorderSize = 0;
@@ -147,6 +163,8 @@ namespace Graph_Editor
                 TextAlign = HorizontalAlignment.Center,
             };
 
+            weightText.BackColor = Color.White;
+
             Controls.Add(weightText);
             weightText.BringToFront();
 
@@ -156,7 +174,7 @@ namespace Graph_Editor
 
         #region Graph
 
-        private void AdjacencyMatrixButton_Click(object sender, EventArgs e)
+        private void adjacencyMatrixToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = new Form()
             {
@@ -180,7 +198,7 @@ namespace Graph_Editor
             form.ShowDialog();
         }
 
-        private void ShortestDistanceMatrixButton_Click(object sender, EventArgs e)
+        private void shortestDistanceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = new Form()
             {
@@ -204,7 +222,7 @@ namespace Graph_Editor
             form.ShowDialog();
         }
 
-        private void GetShortestRoute_Click(object sender, EventArgs e)
+        private void shortestRouteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = new Form()
             {
@@ -256,6 +274,7 @@ namespace Graph_Editor
                     int startPointIndex = int.Parse(text1.Text) - 1;
                     int endPointIndex = int.Parse(text2.Text) - 1;
                     ShowShortestRoute(startPointIndex, endPointIndex);
+                    form.Close();
                 }
             };
 
@@ -318,7 +337,7 @@ namespace Graph_Editor
         #endregion
 
         #region Saving
-        private void ScreenshotButton_Click(object sender, EventArgs e)
+        private void saveScreenshotToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Bitmap image = new Bitmap(MainPictureBox.Width, MainPictureBox.Height);
             Graphics graphics = Graphics.FromImage(image);
